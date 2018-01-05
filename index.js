@@ -1,5 +1,4 @@
 const xlsx = require('node-xlsx');
-// another useless code 
 const path = require('path');
 const file = process.argv[2];
 const moment = require('moment');
