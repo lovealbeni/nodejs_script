@@ -1,9 +1,7 @@
 const xlsx = require('node-xlsx');
-// stash a file
 const path = require('path');
 const file = process.argv[2];
 const moment = require('moment');
-//to test the stash
 
 // 获取文件后缀名
 function getFileExt(file) {
