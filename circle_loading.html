@@ -1,0 +1,61 @@
+<html>
+<head>
+    <style>
+      .circle{
+				position: relative;
+        background-color: red;
+				width: 200px;
+				height: 200px;
+				border-radius: 50%;
+      }
+			.circle-left{
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 200px;
+				height: 200px;
+				border-radius:50%;
+				clip: rect(0px auto auto 100px);
+				overflow: hidden;
+			}
+			.left{
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 200px;
+				height: 200px;
+				background: linear-gradient(90deg,transparent 50%,darkgray 0);
+				transform: rotate(40deg);
+			}
+			.circle-right{
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 200px;
+				height: 200px;
+				border-radius:50%;
+				clip: rect(0px 100px auto 0px);
+				overflow: hidden;
+			}
+			.right{
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 200px;
+				height: 200px;
+				background: linear-gradient(90deg,darkgray 50%,transparent 0);
+				transform: rotate(0deg);
+			}
+    </style>
+</head>
+<body>
+  <div class="circle">
+		<div class="circle-left">
+			<div class="left"></div>
+		</div>
+		<div class="circle-right">
+			<div class="right"></div>
+		</div>
+	</div>
+</body>
+</html>
