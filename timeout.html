@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+</head>
+<body>
+	<button onclick="stopTimeout()">click</button>
+	<script>
+		window.onload = function(){
+			console.log('here');
+			app.init();
+		}
+		var app = {
+			counter:2,
+			id:0,
+			init:function(){
+				this.id = setTimeout(() => {
+					if(this.counter<105){
+						this.counter++;
+						console.log(this.counter,this.id);
+						this.init();
+					}else{
+						console.log('over');
+						clearTimeout(this.id);
+					}
+				}, 100);
+			},
+			stop:function(){
+				clearTimeout(this.id);
+			}
+		}
+		function stopTimeout(){
+			console.log('stop');
+			app.stop();
+		}
+	</script>
+</body>
+</html>
