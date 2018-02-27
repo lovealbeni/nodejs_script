@@ -1,42 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Document</title>
+	<style>
+		#canvas {
+			border: 1px solid black;
+			display: block;
+		}
+		div[id^='A']{
+			color: red;
+		}
+	</style>
 </head>
+
 <body>
-	<button onclick="stopTimeout()">click</button>
+
+	<input type="number" id="circleNumber">
+	<button onclick="clickNoScale()">clickNoScale</button>
+	<button onclick="clickScale()">click with scale</button>
+	<canvas id="canvas" width="1000" height="500"></canvas>
+	<div id="startTime"></div>
+	<div id="endTime"></div>
+	<div id="length"></div>
+	<div id="AstartTime"></div>
+	<div id="AendTime"></div>
+	<div id="Alength"></div>
 	<script>
 		window.onload = function(){
-			console.log('here');
-			app.init();
+			var canvas = document.getElementById("canvas");
+			var context = canvas.getContext("2d");
 		}
-		var app = {
-			counter:2,
-			id:0,
-			init:function(){
-				this.id = setTimeout(() => {
-					if(this.counter<105){
-						this.counter++;
-						console.log(this.counter,this.id);
-						this.init();
-					}else{
-						console.log('over');
-						clearTimeout(this.id);
-					}
-				}, 100);
-			},
-			stop:function(){
-				// test to stop timeout,and the old timeout id is useless
-				clearTimeout(this.id);
+		function clickNoScale(){
+			var canvas = document.getElementById("canvas");
+			var context = canvas.getContext("2d");
+			context.clearRect(0,0,canvas.clientWidth,canvas.clientHeight);
+			var ballNum = document.getElementById("circleNumber").value;
+			let start = new Date();
+			for(let i=0;i<ballNum;i++){
+				noScale(context,Random(0,1000),Random(0,500));
 			}
+			let end = new Date();
+			document.getElementById("startTime").innerText = start.valueOf();
+			document.getElementById("endTime").innerText = end.valueOf();
+			document.getElementById("length").innerText = end-start;
 		}
-		function stopTimeout(){
-			console.log('stop');
-			app.stop();
+		function clickScale(){
+			var canvas = document.getElementById("canvas");
+			var context = canvas.getContext("2d");
+			context.clearRect(0,0,canvas.clientWidth,canvas.clientHeight);
+			var ballNum = document.getElementById("circleNumber").value;
+			let start = new Date();
+			for(let i=0;i<ballNum;i++){
+				Scale(context,Random(0,1000),Random(0,500));
+			}
+			let end = new Date();
+			document.getElementById("AstartTime").innerText = start.valueOf();
+			document.getElementById("AendTime").innerText = end.valueOf();
+			document.getElementById("Alength").innerText = end-start;
+			
+		}
+		function Random(min,max){
+			return Math.floor(Math.random()*(max-min)+min);
+		}
+		function noScale(context,x,y){
+			context.fillStyle = `hsla(${360 * Math.random() | 0},80%,60%,1)`;
+			context.beginPath();
+			context.arc(x,y,30,0,2*Math.PI);
+			context.fill();
+			context.stroke();
+		}
+		function Scale(context,x,y){
+			context.save();
+			context.fillStyle = `hsla(${360 * Math.random() | 0},80%,60%,1)`;
+			context.beginPath();
+			context.lineWidth /= 10;
+			context.translate(x,y);
+			context.scale(10,10);
+			context.translate(-x,-y);
+			context.arc(x,y,3,0,2*Math.PI);
+			context.fill();
+			context.stroke();
+			
+			context.restore();
 		}
 	</script>
 </body>
+
 </html>
