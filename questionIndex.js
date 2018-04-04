@@ -17,8 +17,9 @@
 // 	doAnimationFrame(test);
 // }
 
-function foo(first,...last){
-	console.log(last);
+function foo(){
+	let a = [],b = [];
+	console.log(a,b);
 }
-
-foo.apply(foo,[1,2,3,4]);
+foo();
+console.log(b)
