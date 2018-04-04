@@ -3,7 +3,6 @@ const path = require('path');
 const file = process.argv[2];
 const moment = require('moment');
 //test for atom
-// a test for git in emacs
 // 获取文件后缀名
 function getFileExt(file) {
 	return path.extname(file);
