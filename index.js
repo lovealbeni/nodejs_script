@@ -2,7 +2,6 @@ const xlsx = require('node-xlsx');
 const path = require('path');
 const file = process.argv[2];
 const moment = require('moment');
-//test for atom
 // 获取文件后缀名
 function getFileExt(file) {
 	return path.extname(file);
