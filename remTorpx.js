@@ -2,7 +2,6 @@ const path = require('path');
 const file = process.argv[2];
 const fs = require('fs');
 
-//lalalal
 function getFileExt(file) {
 	return path.extname(file);
 }
