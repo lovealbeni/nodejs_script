@@ -6,7 +6,7 @@ const moment = require('moment');
 function getFileExt(file) {
 	return path.extname(file);
 }
-
+//test
 function main() {
 	let output_data = {};
 	if (!file) {
