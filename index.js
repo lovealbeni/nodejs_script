@@ -1,3 +1,6 @@
+//TODO:remove it
+/// <reference path="/usr/local/lib/node_modules/@types/jquery/index.d.ts"/>
+/// <reference path="/usr/local/lib/node_modules/@types/three/index.d.ts"/>
 const xlsx = require('node-xlsx');
 const path = require('path');
 const file = process.argv[2];
@@ -32,5 +35,8 @@ function main() {
 	console.log(output_data);
 	return;
 }
+
+var sence = new THREE.Scene()
+var camera = new THREE.PerspectiveCamera()
 
 main(); // 入口函数
