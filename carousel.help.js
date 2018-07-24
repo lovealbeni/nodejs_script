@@ -9,3 +9,11 @@ if(offset<0){
 	offset = this.maxOffset;
 }
 this.carousel._scroll((-(offset)),true);
+
+<div class="category">
+			<div class="scroll-wrapper">
+				<div class="selectCategory" :class="item.cat_id==selectId?'selected':''" v-for="item in allTags" @click="selectCategory(item.cat_id)">
+					{{item.cat_name}}
+				</div>
+			</div>
+		</div>
