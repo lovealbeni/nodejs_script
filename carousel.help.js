@@ -3,6 +3,9 @@ this.maxOffset = $('.scroll-wrapper').width() - $('.category').width();
 let pos = $('.selectCategory.selected').position().left + $('.selectCategory.selected').width()/2;
 let offset = ((this.wrapperPos+pos));
 this.moreCarousel = new Swiper('.swiper-container',{});
+if(this.maxOffset<=0){
+	return;
+}
 if(offset<0){
 	return;
 }else if(offset>this.maxOffset){
