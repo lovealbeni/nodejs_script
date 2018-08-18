@@ -22,21 +22,39 @@ function main() {
 
 	let xlsxFile = path.resolve(process.cwd(), file);
 	let data = xlsx.parse(xlsxFile)[0].data;
-	let now;
-	for(let i of data){
-		if(i.length == 1){
-			now = i[0];
-			output_data[now] = [];
+	let result = {};
+	let origin_date = data[1][6];
+	let index = 0;
+	for(let i=1,j=data.length;i<j;i++){
+		let target = data[i];//target is an array
+		// console.log(data[i]);
+		if(target[6] != origin_date){
+			index++;
+			origin_date = target[6];
 		}
-		else{
-			output_data[now].push(i[1])
+		if(!result[index]){
+			result[index] = [{
+				'goods_id':target[1],
+				'goods_name':target[2],
+				'bargain_money':target[3],
+				'buy_price':target[4],
+				'daily_price':target[5],
+				'date':target[6]
+			}];
+		}else{
+			result[index].push({
+				'goods_id':target[1],
+				'goods_name':target[2],
+				'bargain_money':target[3],
+				'buy_price':target[4],
+				'daily_price':target[5],
+				'date':target[6]
+			})
 		}
 	}
-	console.log(output_data);
+	console.log(result.toString());
 	return;
 }
 
-var sence = new THREE.Scene()
-var camera = new THREE.PerspectiveCamera()
 
 main(); // 入口函数
