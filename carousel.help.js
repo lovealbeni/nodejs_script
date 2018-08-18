@@ -21,6 +21,7 @@ this.carousel._scroll((-(offset)),true);
 			</div>
 		</div>
 //moveTo example
+let a,v,distance;
 function MoveTo(startPos,endPos,isFirst=true){
 	if(isFirst){
 		distance = endPos - startPos;
