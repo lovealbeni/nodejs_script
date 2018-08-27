@@ -28,31 +28,31 @@ function main() {
 	for(let i=1,j=data.length;i<j;i++){
 		let target = data[i];//target is an array
 		// console.log(data[i]);
-		if(target[6] != origin_date){
-			index++;
-			origin_date = target[6];
-		}
+		// if(target[6] != origin_date){
+		// 	index++;
+		// 	origin_date = target[6];
+		// }
 		if(!result[index]){
 			result[index] = [{
-				'goods_id':target[1],
-				'goods_name':target[2],
-				'bargain_money':target[3],
-				'buy_price':target[4],
-				'daily_price':target[5],
-				'date':target[6]
+				'goods_id':target[0],
+				'goods_name':target[1],
+				'dingjin':target[2],
+				'daoshoujia':target[3],
+				'richang':target[4],
+				// 'date':target[6]
 			}];
 		}else{
 			result[index].push({
-				'goods_id':target[1],
-				'goods_name':target[2],
-				'bargain_money':target[3],
-				'buy_price':target[4],
-				'daily_price':target[5],
-				'date':target[6]
+				'goods_id':target[0],
+				'goods_name':target[1],
+				'dingjin':target[2],
+				'daoshoujia':target[3],
+				'richang':target[4],
+				// 'date':target[6]
 			})
 		}
 	}
-	console.log(result.toString());
+	console.log(JSON.stringify(result));
 	return;
 }
 
