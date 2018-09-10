@@ -1,44 +1,13 @@
 <html>
 <head>
 	<style>
-		div{
-			width: 100px;
-			height: 100px;
-			background: pink;
-			border-radius: 50%;
-			position: absolute;
-			top: 0;
-			right: 0;
-			bottom: 0;
-			left: 0;
-			margin: auto;
+		canvas{
+			border: 1px solid black;
 		}
 	</style>
 </head>
 <body>
 	<div id="demo"></div>
-	<script>
-		const T = 10*100;
-		var i=0;
-		function main(){
-			var dom = document.getElementById('demo');
-			render(new Date(),dom);
-		}
-		function render(thisTime,dom){
-			i++;
-			dom.style.transform = getRandom(2*Math.sin(2*(i%T)*Math.PI/180));
-			requestAnimationFrame(function(){
-				render(new Date(),dom);
-			})
-		}
-		function getSin(){
-
-		}
-		function getRandom(x){
-			x = Math.abs(x);
-			return `matrix(${x}, 0, 0, ${x}, 0, 0)`;
-		}
-		window.onload = main;
-	</script>
+	<script src="./points.js"></script>
 </body>
 </html>
