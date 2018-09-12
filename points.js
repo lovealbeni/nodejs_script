@@ -36,7 +36,7 @@ class Mat{
 }
 class Ball{
 	constructor(v){
-		this.speed = new Vec(10*Math.cos(v).toFixed(6),10*Math.sin(v).toFixed(6));
+		this.speed = new Vec(5*Math.cos(v).toFixed(6),5*Math.sin(v).toFixed(6));
 		this.x = width/2;
 		this.y = 0;
 	}
@@ -49,13 +49,13 @@ class Ball{
 	}
 	isOut(){
 		let a = this.x>width/2;
-		return this.x>width||this.x<0||this.y>height;
+		return this.x>width||this.x<0||this.y>height||this.y<0;
 	}
 	isHit(){
-		let dx = Math.ceil(this.x-static_POS.x);
-		let dy = Math.ceil(this.y-static_POS.y);
+		let dx = Math.abs(Math.ceil(this.x)-static_POS.x);
+		let dy = Math.abs(Math.ceil(this.y)-static_POS.y);
 		let distance = Math.pow(dx,2) + Math.pow(dy,2);
-		return distance<=(Math.pow(45,2));
+		return distance<=(Math.pow(65,2));
 	}
 }
 var P_ball = null;//小球的指针
@@ -79,8 +79,8 @@ function main(){
 		x:canvas.width/2,
 		y:3*canvas.height/4
 	};
-	start_judge = static_POS.y - 40;
-	DrawCenterCircle(cxt,static_POS,40);
+	start_judge = static_POS.y - 60;
+	DrawCenterCircle(cxt,static_POS,60);
 }
 function clear(x,y){
 	if(!x){
@@ -103,13 +103,13 @@ function ClickHander(event){
 }
 function loop(){
 	clear();
-	DrawCenterCircle(cxt,static_POS,40);
+	DrawCenterCircle(cxt,static_POS,60);
 	P_ball.draw(cxt);
 	P_ball.move();
 	if(P_ball.isOut()){
 		P_ball = null;
 		clear();
-		DrawCenterCircle(cxt,static_POS,40);
+		DrawCenterCircle(cxt,static_POS,60);
 		return;
 	}
 	if(P_ball.y >= start_judge){
@@ -117,6 +117,7 @@ function loop(){
 		if(result){
 			// 已经碰撞
 			Boom();
+			// return;
 		}
 	}
 	requestAnimationFrame(()=>{
@@ -124,15 +125,16 @@ function loop(){
 	});
 }
 function Boom(){
-	let vecC = new Vec(P_ball.x,P_ball.y);
-	let length = P_ball.x*P_ball.x + P_ball.y+P_ball.y;
-	length = Math.sqrt(length);
-	let tha = vecC.mutiply(P_ball.speed);
-	tha = tha/(length+10);// cos
-	tha = (Math.acos(tha)*180/Math.PI).toFixed(6);
-	let NV = rotate(50).mutiply(P_ball.speed);
-	P_ball.speed = NV;
-	// let v = rotate(90).mutiply(new Vec(1,1)).print();
+	// 法向量
+	let vecC = new Vec(0,1);
+	// 速度单位向量
+	let vecL = Math.sqrt(P_ball.speed.x*P_ball.speed.x + P_ball.speed.y*P_ball.speed.y);
+	let vecS = new Vec(P_ball.speed.x/vecL,P_ball.speed.y/vecL);
+	let result = vecC.mutiply(vecS);
+	let resultR = Math.acos(result)*180/Math.PI;
+	let QCenterVec = new Vec((P_ball.y-static_POS.y)*5/65,(static_POS.x-P_ball.x)*5/65);
+	QCenterVec = rotate(-(P_ball.speed.x/Math.abs(P_ball.speed.x))*resultR).mutiply(QCenterVec);
+	P_ball.speed = QCenterVec;
 }
 function getRadio(x,y){
 	var dx = x-width/2;
