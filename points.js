@@ -15,6 +15,18 @@ class Vec{
 	mutiply(vec){
 		return vec.x*this.x + vec.y*this.y;
 	}
+	serialize(){
+		let sum = this.x*this.x+this.y*this.y;
+		sum = Math.sqrt(sum);
+		this.x = this.x/sum;
+		this.y = this.y/sum;
+		return this;
+	}
+	long(value){
+		this.x = value*this.x;
+		this.y = value*this.y;
+		return this;
+	}
 }
 class Mat{
 	constructor(array){
@@ -34,9 +46,10 @@ class Mat{
 	}
 	// 二阶
 }
+var defineSpeed = 10;
 class Ball{
 	constructor(v){
-		this.speed = new Vec(5*Math.cos(v).toFixed(6),5*Math.sin(v).toFixed(6));
+		this.speed = new Vec(defineSpeed*Math.cos(v).toFixed(6),defineSpeed*Math.sin(v).toFixed(6));
 		this.x = width/2;
 		this.y = 0;
 	}
@@ -114,7 +127,7 @@ function loop(){
 	}
 	if(P_ball.y >= start_judge){
 		let result = P_ball.isHit();
-		if(result){
+		if(result&&!P_ball.boom){
 			// 已经碰撞
 			Boom();
 			// return;
@@ -125,16 +138,14 @@ function loop(){
 	});
 }
 function Boom(){
-	// 法向量
-	let vecC = new Vec(0,1);
-	// 速度单位向量
-	let vecL = Math.sqrt(P_ball.speed.x*P_ball.speed.x + P_ball.speed.y*P_ball.speed.y);
-	let vecS = new Vec(P_ball.speed.x/vecL,P_ball.speed.y/vecL);
-	let result = vecC.mutiply(vecS);
-	let resultR = Math.acos(result)*180/Math.PI;
-	let QCenterVec = new Vec((P_ball.y-static_POS.y)*5/65,(static_POS.x-P_ball.x)*5/65);
-	QCenterVec = rotate(-(P_ball.speed.x/Math.abs(P_ball.speed.x))*resultR).mutiply(QCenterVec);
-	P_ball.speed = QCenterVec;
+	let vecIn = new Vec(static_POS.x-P_ball.x,static_POS.y-P_ball.y).serialize();
+	let vecOut = new Vec(P_ball.x-static_POS.x,P_ball.y-static_POS.y).serialize();
+	P_ball.speed.serialize();
+	let In = vecIn.mutiply(P_ball.speed);
+	let InRadion = Math.acos(In)*180/Math.PI;
+	let Nv = rotate((P_ball.speed.x/Math.abs(P_ball.speed.x))*InRadion).mutiply(vecOut).long(defineSpeed);
+	P_ball.speed = Nv;
+	P_ball.boom = true;
 }
 function getRadio(x,y){
 	var dx = x-width/2;
