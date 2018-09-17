@@ -7,85 +7,90 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Document</title>
 	<style>
-		#canvas {
-			border: 1px solid black;
-			display: block;
-		}
-		div[id^='A']{
-			color: red;
+		div{
+			height: 500px;
+			border: 10px solid black;
+			background-color: red;
+			margin: 10px 0;
 		}
 	</style>
 </head>
 
 <body>
-
-	<input type="number" id="circleNumber">
-	<button onclick="clickNoScale()">clickNoScale</button>
-	<button onclick="clickScale()">click with scale</button>
-	<canvas id="canvas" width="1000" height="500"></canvas>
-	<div id="startTime"></div>
-	<div id="endTime"></div>
-	<div id="length"></div>
-	<div id="AstartTime"></div>
-	<div id="AendTime"></div>
-	<div id="Alength"></div>
+	<button onclick="up()">up</button>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<button onclick="down()">down</button>
 	<script>
-		window.onload = function(){
-			var canvas = document.getElementById("canvas");
-			var context = canvas.getContext("2d");
+		let duration = 5*1000;//ms
+		function up(){
+			let startTime = new Date();
+			loop(startTime);
 		}
-		function clickNoScale(){
-			var canvas = document.getElementById("canvas");
-			var context = canvas.getContext("2d");
-			context.clearRect(0,0,canvas.clientWidth,canvas.clientHeight);
-			var ballNum = document.getElementById("circleNumber").value;
-			let start = new Date();
-			for(let i=0;i<ballNum;i++){
-				noScale(context,Random(0,1000),Random(0,500));
+		function loop(startTime){
+			console.log('loop');
+			if(loop.percent == 1){
+				loop.percent = 0;
+				console.log('over');
+				return;
 			}
-			let end = new Date();
-			document.getElementById("startTime").innerText = start.valueOf();
-			document.getElementById("endTime").innerText = end.valueOf();
-			document.getElementById("length").innerText = end-start;
+			loop.percent = move(0,document.body.scrollHeight,startTime);
+			requestAnimationFrame(function(){
+				loop(startTime);
+			});
 		}
-		function clickScale(){
-			var canvas = document.getElementById("canvas");
-			var context = canvas.getContext("2d");
-			context.clearRect(0,0,canvas.clientWidth,canvas.clientHeight);
-			var ballNum = document.getElementById("circleNumber").value;
-			let start = new Date();
-			for(let i=0;i<ballNum;i++){
-				Scale(context,Random(0,1000),Random(0,500));
+		function down(){
+			let startTime = new Date();
+			loopDown(startTime);
+		}
+		function loopDown(startTime){
+			console.log('loop');
+			if(loopDown.percent == 1){
+				loopDown.percent = 0;
+				console.log('over');
+				return;
 			}
-			let end = new Date();
-			document.getElementById("AstartTime").innerText = start.valueOf();
-			document.getElementById("AendTime").innerText = end.valueOf();
-			document.getElementById("Alength").innerText = end-start;
-			
+			loopDown.percent = move(document.body.scrollHeight,0,startTime);
+			requestAnimationFrame(function(){
+				loopDown(startTime);
+			})
 		}
-		function Random(min,max){
-			return Math.floor(Math.random()*(max-min)+min);
-		}
-		function noScale(context,x,y){
-			context.fillStyle = `hsla(${360 * Math.random() | 0},80%,60%,1)`;
-			context.beginPath();
-			context.arc(x,y,30,0,2*Math.PI);
-			context.fill();
-			context.stroke();
-		}
-		function Scale(context,x,y){
-			context.save();
-			context.fillStyle = `hsla(${360 * Math.random() | 0},80%,60%,1)`;
-			context.beginPath();
-			context.lineWidth /= 10;
-			context.translate(x,y);
-			context.scale(10,10);
-			context.translate(-x,-y);
-			context.arc(x,y,3,0,2*Math.PI);
-			context.fill();
-			context.stroke();
-			
-			context.restore();
+		function move(start,target,startTime){
+			let now = new Date();
+			let percent = (now - startTime)/duration;
+			percent = Math.pow(percent,3);
+			let distance = start + (target-start)*percent;
+			console.log(distance);
+			window.scrollTo(0,distance);
+			return Math.min(percent,1);
 		}
 	</script>
 </body>
