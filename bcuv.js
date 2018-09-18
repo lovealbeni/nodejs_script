@@ -56,12 +56,13 @@ function preGuessT(x) {
 	var t = 0;
 	for (var i = 0; i < segement; i++) {
 			var step = sampleStep[i];
-			if (x < step) {
+			if (x <= step) {
 			var segStep = 1 / segement;
 			var base = i * segStep; // 区间的下边界
 			var aBit = segStep * (x - step) / (sampleStep[i+1] - sampleStep[i]); // 多出来的部分进行插值
 			// 相当于在这一段当中，线性
 			t = base + aBit; // 区间的下边界 ＋ 插值
+			break;
 		}
 	}
 	if(t==0){
@@ -81,7 +82,8 @@ function loop2(){
 	var now = new Date();
 	var percent = (now-startTime2)/cycle;
 	if(percent>=1){
-		percent = 1;
+		window.cancelAnimationFrame(stop2);
+		return;
 	}
 	var t =preGuessT(percent);
 	var posy = calcBezier(t,global_p1y,global_p2y);
@@ -108,7 +110,7 @@ function drawCircle(x,y,isCor=false){
 		y = 1.3-y;
 		x = 0.5+x;
 	}
-	cxt.arc(x*300,y*300+20,10,0,2*Math.PI);
+	cxt.arc(x*300,y*300,10,0,2*Math.PI);
 	cxt.fillStyle = 'pink';
 	cxt.fill();
 }
