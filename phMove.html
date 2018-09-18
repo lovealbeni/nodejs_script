@@ -48,7 +48,7 @@
 	<div></div>
 	<div></div>
 	<div></div>
-	<button onclick="down()">down</button>
+	<!-- <button onclick="down()">down</button> -->
 	<script>
 		let duration = 5*1000;//ms
 		function up(){
@@ -91,11 +91,6 @@
 			console.log(distance);
 			window.scrollTo(0,distance);
 			return Math.min(percent,1);
-		}
-		function bmove(start,target,startTime){
-			let now = new Date();
-			let percent = (now-startTime)/duration;
-			percent = 
 		}
 	</script>
 </body>
