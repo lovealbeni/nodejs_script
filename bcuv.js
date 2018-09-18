@@ -122,7 +122,6 @@ var handler = null;
 function loop(pointArray){
 	var now = new Date();
 	var percent = ((now - startTime))/cycle;
-	console.log(percent);
 	if(percent>=1){
 		window.cancelAnimationFrame(handler);
 		return;
