@@ -1,0 +1,25 @@
+<div class="x-passport-mask-out"></div>
+	<div class="x-passport-mask">
+				<div class="x-passport">
+						<div>
+								<div class="ipt-box border-1px-bottom">
+										<input placeholder="手机号码" name="phone" type="number" class="x-phone" />
+								</div>
+								<div class="ipt-box border-1px-bottom">
+										<input placeholder="密码" name="pwd" type="password" class="x-pwd"/>
+										<button class="eye-btn" type="button"></button>
+								</div>
+								<div class="ipt-box border-1px-bottom pic-code-box require">
+									<input placeholder="图片验证码" name="validate_code" type="text" />
+									<img :src="validateCodeUrl" @click="changeValidateCode" class="validate-code-img"/>
+								</div>
+								<div class="danger-tips"></div>
+								<div class="ipt-box">
+										<button type="submit" class="submit-btn">登录</button>
+								</div>
+								<div class="ipt-box x-reg-btn">没有账号?立即注册</div>
+						</div>
+						<div class="x-close">×<i></i></div>
+
+				</div>
+	</div>
