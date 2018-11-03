@@ -128,10 +128,11 @@ function loop(pointArray){
 		window.cancelAnimationFrame(handler);
 		return;
 	}
-	percent = percent * pointArray.length;
-	percent = Math.floor(percent);
+	// percent = percent * pointArray.length;
+	// percent = Math.floor(percent);
 	cxt.clearRect(0,0,500,500);
-	drawCircle(0.5,pointArray[percent].y);
+	// drawCircle(0.5,pointArray[percent].y);
+	drawCircle(0.5,calcBezier(percent,global_p1y,global_p2y));
 	handler = requestAnimationFrame(function(){
 		loop(pointArray);
 	});
