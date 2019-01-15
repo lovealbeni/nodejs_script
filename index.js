@@ -1,6 +1,7 @@
 //TODO:remove it
 /// <reference path="/usr/local/lib/node_modules/@types/jquery/index.d.ts"/>
 /// <reference path="/usr/local/lib/node_modules/@types/three/index.d.ts"/>
+// add some for rebase test
 const xlsx = require('node-xlsx');
 const path = require('path');
 const file = process.argv[2];
