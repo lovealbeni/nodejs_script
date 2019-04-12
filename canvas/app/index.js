@@ -17,8 +17,8 @@ function main(){
 		ry:10,
 		angle:45,
 		// hasControls:false,
-		lockMovementX:true,
-		lockMovementY:true,
+		// lockMovementX:true,
+		// lockMovementY:true,
 		hoverCursor:null
 	});
 	canvas.add(rect);
