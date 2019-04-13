@@ -1,7 +1,8 @@
 var VSHADER_SOURCE = '';
+VSHADER_SOURCE+='attribute vec4 a_Position;'
 VSHADER_SOURCE+='void main(){';
-VSHADER_SOURCE+='gl_Position=vec4(0.0,0.0,0.0,1.0);';
-VSHADER_SOURCE+='gl_PointSize=50.0;';
+VSHADER_SOURCE+='gl_Position=a_Position;';
+VSHADER_SOURCE+='gl_PointSize=10.0;';
 VSHADER_SOURCE+='}';
 var FSHADER_SOURCE = '';
 FSHADER_SOURCE+='void main(){'
