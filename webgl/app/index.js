@@ -1,6 +1,7 @@
 import shader from './vshader';
-import { defineLocale } from 'moment';
+import Matrix from './cuon-matrix';
 function main(){
+    var matrix = new Matrix.Matrix4();
     var VSHADER_SOURCE = shader.VSHADER_SOURCE;
     var FSHADER_SOURCE = shader.FSHADER_SOURCE;
     var canvas = document.createElement('canvas');
@@ -34,6 +35,18 @@ function main(){
     gl.bufferData(gl.ARRAY_BUFFER,vertices,gl.STATIC_DRAW);
     gl.vertexAttribPointer(a_Position,2,gl.FLOAT,false,0,0);
     gl.enableVertexAttribArray(a_Position);
+
+    // var xformMatrix = new Float32Array([
+    //     1.0,0.0,0.0,0.3,
+    //     0.0,1.0,0.0,0.0,
+    //     0.0,0.0,1.0,0.0,
+    //     0.0,0.0,0.0,1.0
+    // ])
+    matrix.setRotate(20,1,1,1);
+    // matrix.transpose();
+    var u_xformMatrix = gl.getUniformLocation(programe,'u_xformMatrix');
+    gl.uniformMatrix4fv(u_xformMatrix,false,matrix.elements);
+
     gl.drawArrays(gl.TRIANGLES,0,point_n);
     attach(canvas);
 }
