@@ -5,8 +5,8 @@ function main(){
     var VSHADER_SOURCE = shader.VSHADER_SOURCE;
     var FSHADER_SOURCE = shader.FSHADER_SOURCE;
     var canvas = document.createElement('canvas');
-    canvas.width = window.innerWidth*0.8;
     canvas.height = window.innerHeight*0.8;
+    canvas.width = canvas.height;
     var gl = canvas.getContext('webgl');
     
     var vshader = gl.createShader(gl.VERTEX_SHADER);
@@ -27,7 +27,7 @@ function main(){
     gl.clearColor(0.0,0.0,0.0,1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
     var vertices = new Float32Array([
-        0.0,0.5,-0.5,-0.5,0.5,-0.5
+        0.0,0.3,-0.3,-0.3,0.3,-0.3
     ]);
     var point_n = 3;
     var vertexBuffer = gl.createBuffer();
@@ -36,18 +36,12 @@ function main(){
     gl.vertexAttribPointer(a_Position,2,gl.FLOAT,false,0,0);
     gl.enableVertexAttribArray(a_Position);
 
-    // var xformMatrix = new Float32Array([
-    //     1.0,0.0,0.0,0.3,
-    //     0.0,1.0,0.0,0.0,
-    //     0.0,0.0,1.0,0.0,
-    //     0.0,0.0,0.0,1.0
-    // ])
-    matrix.setRotate(20,1,1,1);
-    // matrix.transpose();
+    matrix.translate(0.5,0,0);
+    matrix.setRotate(60.0,0,0,1);
     var u_xformMatrix = gl.getUniformLocation(programe,'u_xformMatrix');
     gl.uniformMatrix4fv(u_xformMatrix,false,matrix.elements);
-
-    gl.drawArrays(gl.TRIANGLES,0,point_n);
+    
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,point_n);
     attach(canvas);
 }
 function attach(dom){
