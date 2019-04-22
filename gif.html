@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>gif</title>
+    <style>
+        img{
+            width: 20px;
+            height: 20px;
+        }
+        #gif{
+            width: 200px;
+            height: 200px;
+            border: 1px solid red;
+        }
+        canvas{
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <img src="./pm.jpg" alt="" id="img">
+    <img id="gif" alt="">
+    <script src="./gif.js"></script>
+    <script src="./gif.worker.js"></script>
+    <script src="./gif/dist/bundle.js"></script>
+    <script>
+        const ANIMATIONTYPE = {
+            TYPE_COL:0,
+            TYPE_ROW:1,
+        }
+    </script>
+</body>
+</html>
