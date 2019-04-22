@@ -2,6 +2,7 @@
   "name": "",
   "version": "",
   "dependencies": {
+    "http-proxy": "^1.17.0",
     "moment": "^2.20.1",
     "node-xlsx": "^0.11.2"
   }
