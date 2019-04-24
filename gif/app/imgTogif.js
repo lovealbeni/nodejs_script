@@ -36,31 +36,6 @@ class GifMaker{
         }
         this.frameArray.push(frame.getCanvas());
     }
-    addPic(picConfig){
-        // 图片宽,高,src和x,y坐标
-        try {
-            this._addPicHandler(picConfig)
-        } catch (error) {
-            throw new Error(error);
-        }
-    }
-    _addPicHandler(picConfig){
-        if(picConfig.x + picConfig.width > this.animationCanvas.width){
-            this.animationCanvas.width = picConfig.x + picConfig.width;
-        }
-        if(picConfig.y + picConfig.height > this.animationCanvas.height){
-            this.animationCanvas.height = picConfig.y + picConfig.height;
-        }
-        this.animationCanvasContext.drawImage(picConfig.src,picConfig.x,picConfig.y,picConfig.width,picConfig.height);
-    }
-    drawGif(gifConfig){
-        // 图片帧数,持续时间,方向
-        try {
-            return this._drawGifHandler(gifConfig);
-        } catch (error) {
-            throw new Error(error)
-        }
-    }
     genFrame({funX,funY}){
         let x,y,currentCanvas,nextCanvas,nextX,nextY;
         if(typeof funX != 'function' || typeof funY != 'function'){
@@ -84,38 +59,6 @@ class GifMaker{
                 this.sectionArray.push(this.gifCanvas.toDataURL('image/jpeg'));
             }
         }
-    }
-    stepCondition(start,end,stepLength,step,direction){
-        let result = {
-            x:0,
-            y:0
-        }
-        switch(direction){
-            case DIRECTION.TOP:
-                result.y = start + step*stepLength;
-                if(result.y>end){
-                    result.y=end;
-                }
-                break;
-            default:
-                break;
-        }
-        return result;
-    }
-    getFrameStartAndEnd(direction){
-        let result = {
-            start:0,
-            end:0
-        }
-        switch (direction) {
-            case DIRECTION.TOP:
-                result.end = this.animationCanvas.height - this.gifCanvas.height;
-                break;
-            //todo:补全剩下的,现在只支持了top
-            default:
-                break;
-        }
-        return result;
     }
     loadImg(src){
         return new Promise((resolve)=>{

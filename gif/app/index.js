@@ -13,30 +13,16 @@ function main(){
         maker.addFrame(frame);
         maker.genFrame({
             funX:(percent)=>{
+                // return Math.sin(percent*halfOfPI);
                 return 0;
             },
             funY:(percent)=>{
                 return Math.sin(percent*halfOfPI);
             }
         });
-        // maker.addPic({
-        //     src:img,
-        //     width:400,
-        //     height:400,
-        //     x:0,
-        //     y:0
-        // });
-        // maker.addPic({
-        //     src:img,
-        //     width:400,
-        //     height:400,
-        //     x:0,
-        //     y:400
-        // })
         let dom = document.getElementById('gif');
         maker.exportGif().then(src=>{
-            let target = document.querySelector('#gif');
-            target.src = src;
+            dom.src = src;
         });
     }
     
