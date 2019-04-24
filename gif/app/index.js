@@ -12,7 +12,9 @@ function main(){
         maker.addFrame(frame);
         maker.addFrame(frame);
         maker.genFrame({
-            funX:(percent)=>{return 0;},
+            funX:(percent)=>{
+                return 0;
+            },
             funY:(percent)=>{
                 return Math.sin(percent*halfOfPI);
             }
