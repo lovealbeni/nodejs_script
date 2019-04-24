@@ -25,6 +25,7 @@ class GifMaker{
         this.animationCanvasContext = this.animationCanvas.getContext('2d');
         this.frameArray = [];//存储画图的帧
         this.sectionArray = [];//根据
+        this.frameCount = config.frameCount || 10;
     }
     createFrame(){
         return new Frame({width:this.width,height:this.height});
@@ -33,7 +34,7 @@ class GifMaker{
         if(!(frame instanceof Frame)){
             throw new Error('need a Frame');
         }
-        this.frameArray.push(frame);
+        this.frameArray.push(frame.getCanvas());
     }
     addPic(picConfig){
         // 图片宽,高,src和x,y坐标
@@ -60,17 +61,28 @@ class GifMaker{
             throw new Error(error)
         }
     }
-    genFrame(config={}){
-        this.frame = config.frame || 30;//传入帧数
-        this.direction = config.direction || DIRECTION.TOP;//移动方向
-        let stepLength = (this.animationCanvas.height-this.gifCanvas.height)/this.frame;//每一帧移动的步长,作用和上下有区别!!!
-        let {start,end} = this.getFrameStartAndEnd(this.direction);
-        for(let step=0;step<this.frame;step++){
-            let {x,y} = this.stepCondition(start,end,stepLength,step,this.direction);
-            this.gifCanvasContext.clearRect(0,0,this.width,this.height);
-            this.gifCanvasContext.fillRect(0,0,this.width,this.height);
-            this.gifCanvasContext.drawImage(this.animationCanvas,x,y,this.width,this.height,0,0,this.width,this.height);
-            this.frameArray.push(this.gifCanvas.toDataURL('image/jpeg'));
+    genFrame({funX,funY}){
+        let x,y,currentCanvas,nextCanvas,nextX,nextY;
+        if(typeof funX != 'function' || typeof funY != 'function'){
+            throw new Error('arguments need function');
+        }
+        for(let frameIndex=0,length=this.frameArray.length-1;frameIndex<length;frameIndex++){
+            currentCanvas = this.frameArray[frameIndex];
+            nextCanvas = this.frameArray[frameIndex+1];
+            for(let sectionIndex=0;sectionIndex<this.frameCount;sectionIndex++){
+                let percent = sectionIndex/this.frameCount;
+                x = nextX = funX(percent)*this.width;
+                y = nextY = funY(percent)*this.height;
+                if(x+y>0){
+                    nextX = (x==0)?this.width:x;
+                    nextY = (y==0)?this.height:y;
+                }
+                this.gifCanvasContext.clearRect(0,0,this.width,this.height);
+                console.log({nextX,nextY,x,y});
+                this.gifCanvasContext.drawImage(currentCanvas,x,y,currentCanvas.width-x,currentCanvas.height-y,0,0,currentCanvas.width-x,currentCanvas.height-y);
+                this.gifCanvasContext.drawImage(nextCanvas,0,0,nextX,nextY,currentCanvas.width-nextX,currentCanvas.height-nextY,nextX,nextY);
+                this.sectionArray.push(this.gifCanvas.toDataURL('image/jpeg'));
+            }
         }
     }
     stepCondition(start,end,stepLength,step,direction){
@@ -108,6 +120,7 @@ class GifMaker{
     loadImg(src){
         return new Promise((resolve)=>{
             let img = new Image();
+            img.className = 'debug';
             img.onload = function(){
                 resolve(img);
             }
@@ -125,10 +138,12 @@ class GifMaker{
                 width:this.width,
                 height:this.height
             });
-            for(let frameIndex=0,length=this.frameArray.length;frameIndex<length;frameIndex++){
-               let img = await this.loadImg(this.frameArray[frameIndex])
+            for(let sectionIndex=0,length=this.sectionArray.length;sectionIndex<length;sectionIndex++){
+               let img = await this.loadImg(this.sectionArray[sectionIndex]);
+            //    document.body.appendChild(img);
+            //    todo:还差一个时间没有写
                 gif.addFrame(img,{
-                    delay:frameIndex==0?0:1
+                    delay:sectionIndex==0?0:1
                 });
             }
             
