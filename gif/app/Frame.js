@@ -9,7 +9,7 @@ class Frame{
         this.imgData = [];
     }
     drawImage({src,x=0,y=0,width=this.width,height=this.height}){
-        this.frameCanvasContext.drawImage(src,0,0,width,height);
+        this.frameCanvasContext.drawImage(src,x,y,width,height);
     }
     getCanvas(){
         return this.frameCanvas;
