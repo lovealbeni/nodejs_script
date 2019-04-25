@@ -39,7 +39,7 @@ class BaseGif{
 				worker: 500,
 				quality: 10,
 				workerScript: 'gif.worker.js',
-				debug: false,
+				debug: true,
 				width: this.config.width,
 				height: this.config.height,
 				background:'#000'
@@ -51,7 +51,7 @@ class BaseGif{
 			) {
 				let img = await this.loadImg(this.sectionArray[sectionIndex]);
 				gif.addFrame(img, {
-					delay: 200
+					delay: 83
 				});
 			}
 
