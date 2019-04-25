@@ -1,7 +1,8 @@
 import Gif from './gif';
 import Frame from './Frame';
 class BaseGif{
-    constructor(){
+    constructor(data){
+		this.data = data;
         this.gifCanvas = document.createElement('canvas');
         this.gifCanvasContext = this.gifCanvas.getContext('2d');
         this.frameArray = [];
