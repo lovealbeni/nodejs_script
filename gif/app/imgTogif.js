@@ -82,12 +82,17 @@ class GifMaker extends BaseGif{
 			let frame = this.frameArray[frameIndex];
 			mergeCanvasContext.drawImage(frame,0,0,frame.width,frame.height,0,frame.height*frameIndex,frame.width,frame.height);
 		}
-		document.body.appendChild(mergeCanvas);
 		return mergeCanvas;
 	}
 	genFrame() {
 		return new Promise(async(resolve) => {
 			let { funX, funY } = this.config;
+			let backgroundCanvas = document.createElement('canvas');
+			let backgroundCanvasContext = backgroundCanvas.getContext('2d');
+			backgroundCanvas.width = 621;
+			backgroundCanvas.height = 292;
+			let backgroundImg = await this.loadImg(this.config.backgroundImg);
+			backgroundCanvasContext.drawImage(backgroundImg,0,0,backgroundCanvas.width,backgroundCanvas.height,0,0,backgroundCanvas.width,backgroundCanvas.height);
 			await this.initFrameArray();
 			let animationCanvas = this.mergeFrame();
 			if (typeof funY != 'function') {
@@ -100,8 +105,9 @@ class GifMaker extends BaseGif{
 				this.gifCanvasContext.clearRect(0,0,this.config.width,this.config.height);
 				this.gifCanvasContext.fillRect(0,0,this.config.width,this.config.height);
 				this.gifCanvasContext.drawImage(animationCanvas,0,y,this.config.width,this.config.height,0,0,this.config.width,this.config.height)
+				backgroundCanvasContext.drawImage(this.gifCanvas,0,0,this.gifCanvas.width,this.gifCanvas.height,87,92,407,178);
 				this.sectionArray.push(
-					this.gifCanvas.toDataURL('image/jpeg')
+					backgroundCanvas.toDataURL('image/jpeg')
 				)
 			}
 			console.log('genFrame',this.sectionArray);
