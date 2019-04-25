@@ -21,89 +21,78 @@ class GifMaker extends BaseGif{
 					return 0;
 				},
 				funY: percent => {
-					return Math.sin(percent * halfOfPI);
+					return percent;
 				},
-				frameCount: 10
+				frameCount: 23
 			},
 			config
 		);
 		this.gifCanvas.width = this.config.width;
 		this.gifCanvas.height = this.config.height;
-		this.gifCanvasContext.fillStyle = 'white';
+		this.gifCanvasContext.fillStyle = '#000';
 		// this.frameCount = config.frameCount || 10;
+	}
+	initFrameArray(){
+		return new Promise(async(resolve)=>{
+			let firstLoopFrame;
+			for(let imgIndex=0,length=this.config.img.length;imgIndex<length;imgIndex+=2){
+				let frame = this.createFrame();
+				frame.drawImage({
+					src:await this.loadImg(this.config.img[imgIndex]),
+					x:0,
+					y:0,
+					width:90,
+					height:90
+				});
+				frame.drawImage({
+					src:await this.loadImg(this.config.img[imgIndex+1]),
+					x:200,
+					y:0,
+					width:90,
+					height:90
+				});
+				if(imgIndex==0){
+					firstLoopFrame = frame;
+				}
+				this.addFrame(frame);
+			}
+			this.addFrame(firstLoopFrame);
+			resolve();
+		})
+	}
+	mergeFrame(){
+		let mergeCanvas = document.createElement('canvas');
+		let mergeCanvasContext = mergeCanvas.getContext('2d');
+		mergeCanvas.width = this.frameArray[0].width;
+		mergeCanvas.height = this.frameArray[0].height * this.frameArray.length;
+		for(let frameIndex=0;frameIndex<this.frameArray.length;frameIndex++){
+			let frame = this.frameArray[frameIndex];
+			mergeCanvasContext.drawImage(frame,0,0,frame.width,frame.height,0,frame.height*frameIndex,frame.width,frame.height);
+		}
+		return mergeCanvas;
 	}
 	genFrame() {
 		return new Promise(async(resolve) => {
 			let { funX, funY } = this.config;
-			let frame = this.createFrame({
-				width:this.config.width,
-				height:this.config.height
-			});
-			let imgs = [];
-			for(let imgIndex=0,length=this.config.img.length;imgIndex<length;imgIndex++){
-				imgs.push(await this.loadImg(this.config.img[imgIndex]));
-			}
-			frame.drawImage({
-				src: imgs[0]
-			});
-			this.addFrame(frame);
-			this.addFrame(frame);
-
+			await this.initFrameArray();
+			let animationCanvas = this.mergeFrame();
 			let x, y, currentCanvas, nextCanvas, nextX, nextY;
-			if (typeof funX != 'function' || typeof funY != 'function') {
+			if (typeof funY != 'function') {
 				throw new Error('arguments need function');
 			}
-			for (
-				let frameIndex = 0, length = this.frameArray.length - 1;
-				frameIndex < length;
-				frameIndex++
-			) {
-				currentCanvas = this.frameArray[frameIndex];
-				nextCanvas = this.frameArray[frameIndex + 1];
-				for (
-					let sectionIndex = 0;
-					sectionIndex < this.config.frameCount;
-					sectionIndex++
-				) {
-					let percent = sectionIndex / this.config.frameCount;
-					x = nextX = funX(percent) * this.config.width;
-					y = nextY = funY(percent) * this.config.height;
-					if (x + y > 0) {
-						nextX = x == 0 ? this.config.width : x;
-						nextY = y == 0 ? this.config.height : y;
-					}
-					this.gifCanvasContext.clearRect(
-						0,
-						0,
-						this.config.width,
-						this.config.height
-					);
-					this.gifCanvasContext.drawImage(
-						currentCanvas,
-						x,
-						y,
-						currentCanvas.width - x,
-						currentCanvas.height - y,
-						0,
-						0,
-						currentCanvas.width - x,
-						currentCanvas.height - y
-					);
-					this.gifCanvasContext.drawImage(
-						nextCanvas,
-						0,
-						0,
-						nextX,
-						nextY,
-						currentCanvas.width - nextX,
-						currentCanvas.height - nextY,
-						nextX,
-						nextY
-					);
-					this.sectionArray.push(
-						this.gifCanvas.toDataURL('image/jpeg')
-					);
+			for(let frameIndex=0;frameIndex<this.config.frameCount;frameIndex++){
+				let percent = frameIndex/this.config.frameCount;
+				let y = this.config.funY(percent);
+				if(y>0.5){
+					break;
+				}else{
+					y = y*animationCanvas.height;
 				}
+				this.gifCanvasContext.clearRect(0,0,this.config.width,this.config.height);
+				this.gifCanvasContext.drawImage(animationCanvas,0,y,this.config.width,this.config.width,0,0,this.config.width,this.config.height)
+				this.sectionArray.push(
+					this.gifCanvas.toDataURL('image/jpeg')
+				)
 			}
 			console.log('genFrame',this.sectionArray);
 			resolve();

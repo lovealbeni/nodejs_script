@@ -7,12 +7,12 @@ class BaseGif{
         this.gifCanvasContext = this.gifCanvas.getContext('2d');
         this.frameArray = [];
         this.sectionArray = [];
-        this.width = 200;
-        this.height = 200;
+        this.width = 400;
+        this.height = 400;
     }
     createFrame(config){
         return new Frame(
-			Object.assign({ width: this.config.width, height: this.config.height }, config)
+			Object.assign({ width: this.width, height: this.height }, config)
 		);
     }
     addFrame(frame){
@@ -41,7 +41,8 @@ class BaseGif{
 				workerScript: 'gif.worker.js',
 				debug: false,
 				width: this.config.width,
-				height: this.config.height
+				height: this.config.height,
+				background:'#000'
 			});
 			for (
 				let sectionIndex = 0, length = this.sectionArray.length;
@@ -50,7 +51,7 @@ class BaseGif{
 			) {
 				let img = await this.loadImg(this.sectionArray[sectionIndex]);
 				gif.addFrame(img, {
-					delay: sectionIndex == 0 ? 0 : 1
+					delay: 200
 				});
 			}
 

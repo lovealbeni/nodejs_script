@@ -1,7 +1,7 @@
 import GifMaker from './imgTogif';
 function main() {
 	let maker = new GifMaker({
-		img: ['./pm.jpg']
+		img: ['./1.png','./2.png','./3.png','./4.png']
 	});
 	let dom = document.getElementById('gif');
 	maker.exportGif().then(src => {
