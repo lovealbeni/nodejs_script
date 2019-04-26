@@ -21,17 +21,18 @@ class GifMaker extends BaseGif{
 					return 0;
 				},
 				funY: percent => {
-					if(percent<0.25){
-						return 0;
-					}else if(percent<0.5){
-						percent=percent-0.25;
-						return (4*percent)/3;
-					}else if(percent<0.75){
-						return 1/3;
-					}else{
-						percent=percent-0.5;
-						return (4*percent)/3;
-					}
+					// if(percent<0.25){
+					// 	return 0;
+					// }else if(percent<0.5){
+					// 	percent=percent-0.25;
+					// 	return (4*percent)/3;
+					// }else if(percent<0.75){
+					// 	return 1/3;
+					// }else{
+					// 	percent=percent-0.5;
+					// 	return (4*percent)/3;
+					// }
+					return (2*percent)/3;
 				},
 				frameCount: 23
 			},
@@ -105,13 +106,16 @@ class GifMaker extends BaseGif{
 				this.gifCanvasContext.clearRect(0,0,this.config.width,this.config.height);
 				this.gifCanvasContext.fillRect(0,0,this.config.width,this.config.height);
 				this.gifCanvasContext.drawImage(animationCanvas,0,y,this.config.width,this.config.height,0,0,this.config.width,this.config.height)
+				backgroundCanvasContext.clearRect(87,92,407,178);
 				backgroundCanvasContext.drawImage(this.gifCanvas,0,0,this.gifCanvas.width,this.gifCanvas.height,87,92,407,178);
-				this.sectionArray.push(
-					backgroundCanvas.toDataURL('image/jpeg')
-				)
+				let delayTime = (frameIndex==0&&frameIndex==10)?850:40;
+				this.sectionArray.push({
+					img:backgroundCanvas.toDataURL('image/jpeg'),
+					delayTime
+				});
 			}
 			console.log('genFrame',this.sectionArray);
-			resolve();
+			resolve(this.sectionArray);
 		});
 	}
 }

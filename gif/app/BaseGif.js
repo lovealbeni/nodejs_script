@@ -34,7 +34,7 @@ class BaseGif{
     }
     exportGif(){
         return new Promise(async (resolve, reject) => {
-			await this.genFrame();
+			let sectionArray = await this.genFrame();
 			let gif = new Gif({
 				worker: 500,
 				quality: 10,
@@ -45,14 +45,14 @@ class BaseGif{
 				background:'#000'
 			});
 			for (
-				let sectionIndex = 0, length = this.sectionArray.length;
+				let sectionIndex = 0, length = sectionArray.length;
 				sectionIndex < length;
 				sectionIndex++
 			) {
-				let img = await this.loadImg(this.sectionArray[sectionIndex]);
+				let img = await this.loadImg(sectionArray[sectionIndex].img);
 				document.body.appendChild(img);
 				gif.addFrame(img, {
-					delay: 83
+					delay: sectionArray[sectionIndex].delayTime
 				});
 			}
 
