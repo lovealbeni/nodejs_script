@@ -6,19 +6,17 @@ class GifMaker extends BaseGif{
 		super(config);
 		this.config = Object.assign(
 			{
-				width: 400,
-				height: 400,
-				img: [],
-				funX: percent => {
-					return 0;
-				},
 				funY: percent => {
 					return (2*percent)/3;
 				},
-				frameCount: 23
+				frameWidth:402,
+				frameHeigh:163
 			},
 			config
 		);
+		this.config.funY = percent=>{
+			return ( (this.frameArray.length-1)*percent )/this.frameArray.length;
+		}
 		this.gifCanvasContext.fillStyle = 'rgb(255,255,255)';
 	}
 	initFrameArray(){
@@ -65,29 +63,32 @@ class GifMaker extends BaseGif{
 	}
 	genFrame() {
 		return new Promise(async(resolve) => {
-			let { funX, funY } = this.config;
-			let backgroundCanvas = document.createElement('canvas');
-			let backgroundCanvasContext = backgroundCanvas.getContext('2d');
-			backgroundCanvas.width = this.width;
-			backgroundCanvas.height = this.height;
+			let { funY } = this.config;
+			let animationCanvas = document.createElement('canvas');
+			let animationCanvasContext = animationCanvas.getContext('2d');
+			animationCanvas.width = 402;
+			animationCanvas.height = 163;
 			let backgroundImg = await this.loadImg(this.config.backgroundImg);
 			await this.initFrameArray();
-			let animationCanvas = this.mergeFrame();
+			let mergeFrame = this.mergeFrame();
 			if (typeof funY != 'function') {
 				throw new Error('arguments need function');
 			}
-			for(let frameIndex=0;frameIndex<this.config.frameCount;frameIndex++){
-				let percent = frameIndex/this.config.frameCount;
+			for(let frameIndex=0;frameIndex<this.frameCount;frameIndex++){
+				let percent = frameIndex/this.frameCount;
 				let y = this.config.funY(percent);
-				y = y*animationCanvas.height;
-				backgroundCanvasContext.clearRect(0,0,backgroundCanvas.width,backgroundCanvas.height);
+				y = y*mergeFrame.height;
+
+				animationCanvasContext.clearRect(0,0,animationCanvas.width,animationCanvas.height);
 				this.gifCanvasContext.clearRect(0,0,this.config.width,this.config.height);
-				this.gifCanvasContext.drawImage(animationCanvas,0,y,402,163,0,0,402,163);
-				backgroundCanvasContext.drawImage(backgroundImg,0,0,backgroundCanvas.width,backgroundCanvas.height,0,0,backgroundCanvas.width,backgroundCanvas.height);
-				backgroundCanvasContext.drawImage(this.gifCanvas,0,0,402,163,87,92,407,178);
+
+				animationCanvasContext.drawImage(mergeFrame,0,y,402,163,0,0,402,163);
+
+				this.gifCanvasContext.drawImage(backgroundImg,0,0,this.width,this.height,0,0,this.width,this.height);
+				this.gifCanvasContext.drawImage(animationCanvas,0,0,402,163,87,92,407,178);
 				let delayTime = (frameIndex==0||frameIndex==11)?2000:40;
 				this.sectionArray.push({
-					img:backgroundCanvas.toDataURL('image/jpeg'),
+					img:this.gifCanvas.toDataURL('image/jpeg'),
 					delayTime
 				});
 			}
