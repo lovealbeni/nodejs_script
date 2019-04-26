@@ -82,11 +82,11 @@ class GifMaker extends BaseGif{
 			if (typeof funY != 'function') {
 				throw new Error('arguments need function');
 			}
-			for(let frameIndex=0;frameIndex<this.frameCount;frameIndex++){
-				let percent = frameIndex/this.frameCount;
+			let step = this.config.frameHeigh/10;
+			for(let frameIndex=0,sumCount=(this.frameArray.length-1)*this.perFrameCount;frameIndex<sumCount;frameIndex++){
+				let percent = frameIndex/this.perFrameCount;
 				let y = this.config.funY(percent);
-				y = y*mergeFrame.height;
-
+				y = step*frameIndex;
 				animationCanvasContext.clearRect(0,0,animationCanvas.width,animationCanvas.height);
 				this.gifCanvasContext.clearRect(0,0,this.config.width,this.config.height);
 
@@ -96,7 +96,7 @@ class GifMaker extends BaseGif{
 				}
 				this.gifCanvasContext.drawImage(animationCanvas,0,0,this.config.frameWidth,this.config.frameHeigh,this.config.animationLoc.x,this.config.animationLoc.y,this.config.frameWidth,this.config.frameHeigh);
 				let delayTime;
-				if(frameIndex==0 || frameIndex==11){
+				if(frameIndex%10==0){
 					delayTime = 4000;
 				}else{
 					delayTime = 10;

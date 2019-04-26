@@ -19,7 +19,7 @@ class BaseGif{
 		this.gifCanvas.width = this.width;
 		this.gifCanvas.height = this.height;
 		
-		this.frameCount = data.frameCount || 23;
+		this.perFrameCount = data.perFrameCount || 10;
 		
 		const GIFCONFIG = {
 			worker: 2,
