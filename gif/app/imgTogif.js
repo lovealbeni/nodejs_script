@@ -32,20 +32,24 @@ class GifMaker extends BaseGif{
 					width:this.config.frameWidth,
 					height:this.config.frameHeigh
 				});
-				frame.drawImage({
-					src:await this.loadImg(this.config.img[imgIndex]),
-					x:this.config.firstPicLoc.x,
-					y:this.config.firstPicLoc.y,
-					width:this.config.perPicWidth,
-					height:this.config.perPicHeight
-				});
-				frame.drawImage({
-					src:await this.loadImg(this.config.img[imgIndex+1]),
-					x:this.config.secondPicLoc.x,
-					y:this.config.secondPicLoc.y,
-					width:this.config.perPicWidth,
-					height:this.config.perPicHeight
-				});
+				try {
+					frame.drawImage({
+						src:await this.loadImg(this.config.img[imgIndex]),
+						x:this.config.firstPicLoc.x,
+						y:this.config.firstPicLoc.y,
+						width:this.config.perPicWidth,
+						height:this.config.perPicHeight
+					});
+					frame.drawImage({
+						src:await this.loadImg(this.config.img[imgIndex+1]),
+						x:this.config.secondPicLoc.x,
+						y:this.config.secondPicLoc.y,
+						width:this.config.perPicWidth,
+						height:this.config.perPicHeight
+					});
+				} catch (error) {
+					throw new Error(error);
+				}
 				if(imgIndex==0){
 					firstLoopFrame = frame;
 				}

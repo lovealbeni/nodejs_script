@@ -1,7 +1,7 @@
 import GifMaker from './imgTogif';
 function main() {
 	let maker = new GifMaker({
-		img: ['./1.png','./2.png','./3.png','./4.png'],
+		img: ['./1.png','./2.png','./3.png','./4.png','./2.png','./3.png'],
 		width:621,
 		height:292,
 		backgroundImg:'./background.jpg',
