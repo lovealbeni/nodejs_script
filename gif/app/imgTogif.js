@@ -19,10 +19,7 @@ class GifMaker extends BaseGif{
 			},
 			config
 		);
-		this.gifCanvas.width = this.config.width;
-		this.gifCanvas.height = this.config.height;
 		this.gifCanvasContext.fillStyle = 'rgb(255,255,255)';
-		// this.frameCount = config.frameCount || 10;
 	}
 	initFrameArray(){
 		return new Promise(async(resolve)=>{
@@ -71,8 +68,8 @@ class GifMaker extends BaseGif{
 			let { funX, funY } = this.config;
 			let backgroundCanvas = document.createElement('canvas');
 			let backgroundCanvasContext = backgroundCanvas.getContext('2d');
-			backgroundCanvas.width = 621;
-			backgroundCanvas.height = 292;
+			backgroundCanvas.width = this.width;
+			backgroundCanvas.height = this.height;
 			let backgroundImg = await this.loadImg(this.config.backgroundImg);
 			await this.initFrameArray();
 			let animationCanvas = this.mergeFrame();

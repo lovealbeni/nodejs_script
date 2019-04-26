@@ -1,14 +1,37 @@
 import Gif from './gif';
 import Frame from './Frame';
+
 class BaseGif{
     constructor(data){
 		this.data = data;
-        this.gifCanvas = document.createElement('canvas');
-        this.gifCanvasContext = this.gifCanvas.getContext('2d');
+        
         this.frameArray = [];
-        this.sectionArray = [];
-        this.width = 400;
-        this.height = 400;
+		this.sectionArray = [];
+		
+		this.imgArray = data.img || [];//要制作gif的素材图片
+		
+		// 整个gif的宽高
+		this.width = data.width || 400;
+		this.height = data.height || 400;
+
+		this.gifCanvas = document.createElement('canvas');
+		this.gifCanvasContext = this.gifCanvas.getContext('2d');
+		this.gifCanvas.width = this.width;
+		this.gifCanvas.height = this.height;
+		
+		this.frameCount = 23;
+		
+		const GIFCONFIG = {
+			worker: 2,
+			quality: 50,
+			workerScript: 'gif.worker.js',
+			debug: true,
+			width: this.width,
+			height: this.height,
+			background:'#000'
+		};
+		this.gifConfig = Object.assign(GIFCONFIG,data.gifConfig);
+
     }
     createFrame(config){
         return new Frame(
@@ -25,7 +48,6 @@ class BaseGif{
     loadImg(src){
         return new Promise((resolve,reject) => {
 			let img = new Image();
-			img.className = 'debug';
 			img.onload = function() {
 				resolve(img);
 			};
@@ -38,15 +60,7 @@ class BaseGif{
     exportGif(){
         return new Promise(async (resolve, reject) => {
 			let sectionArray = await this.genFrame();
-			let gif = new Gif({
-				worker: 500,
-				quality: 50,
-				workerScript: 'gif.worker.js',
-				debug: true,
-				width: this.config.width,
-				height: this.config.height,
-				background:'#000'
-			});
+			let gif = new Gif(this.gifConfig);
 			for (
 				let sectionIndex = 0, length = sectionArray.length;
 				sectionIndex < length;
