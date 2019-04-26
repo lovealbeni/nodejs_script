@@ -23,12 +23,15 @@ class BaseGif{
     }
     genFrame(){}
     loadImg(src){
-        return new Promise(resolve => {
+        return new Promise((resolve,reject) => {
 			let img = new Image();
 			img.className = 'debug';
 			img.onload = function() {
 				resolve(img);
 			};
+			img.onerror = function(error){
+				reject(error);
+			}
 			img.src = src;
 		});
     }
