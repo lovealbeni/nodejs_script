@@ -25,10 +25,11 @@ class BaseGif{
 			worker: 2,
 			quality: 50,
 			workerScript: 'gif.worker.js',
-			debug: true,
+			debug: false,
 			width: this.width,
 			height: this.height,
-			background:'#000'
+			background:'#ffffff',
+			transparent:'#ffffff'
 		};
 		this.gifConfig = Object.assign(GIFCONFIG,data.gifConfig);
 

@@ -10,7 +10,12 @@ class GifMaker extends BaseGif{
 					return (2*percent)/3;
 				},
 				frameWidth:402,
-				frameHeigh:163
+				frameHeigh:163,
+				perPicWidth:163,
+				perPicHeight:163,
+				firstPicLoc:{x:0,y:0},
+				secondPicLoc:{x:239,y:0},
+				animationLoc:{x:87,y:92}
 			},
 			config
 		);
@@ -24,22 +29,22 @@ class GifMaker extends BaseGif{
 			let firstLoopFrame;
 			for(let imgIndex=0,length=this.config.img.length;imgIndex<length;imgIndex+=2){
 				let frame = this.createFrame({
-					width:402,
-					height:163
+					width:this.config.frameWidth,
+					height:this.config.frameHeigh
 				});
 				frame.drawImage({
 					src:await this.loadImg(this.config.img[imgIndex]),
-					x:0,
-					y:0,
-					width:163,
-					height:163
+					x:this.config.firstPicLoc.x,
+					y:this.config.firstPicLoc.y,
+					width:this.config.perPicWidth,
+					height:this.config.perPicHeight
 				});
 				frame.drawImage({
 					src:await this.loadImg(this.config.img[imgIndex+1]),
-					x:239,
-					y:0,
-					width:163,
-					height:163
+					x:this.config.secondPicLoc.x,
+					y:this.config.secondPicLoc.y,
+					width:this.config.perPicWidth,
+					height:this.config.perPicHeight
 				});
 				if(imgIndex==0){
 					firstLoopFrame = frame;
@@ -53,8 +58,8 @@ class GifMaker extends BaseGif{
 	mergeFrame(){
 		let mergeCanvas = document.createElement('canvas');
 		let mergeCanvasContext = mergeCanvas.getContext('2d');
-		mergeCanvas.width = this.frameArray[0].width;
-		mergeCanvas.height = this.frameArray[0].height * this.frameArray.length;
+		mergeCanvas.width = this.config.frameWidth;
+		mergeCanvas.height = this.config.frameHeigh * this.frameArray.length;
 		for(let frameIndex=0;frameIndex<this.frameArray.length;frameIndex++){
 			let frame = this.frameArray[frameIndex];
 			mergeCanvasContext.drawImage(frame,0,0,frame.width,frame.height,0,frame.height*frameIndex,frame.width,frame.height);
@@ -66,9 +71,12 @@ class GifMaker extends BaseGif{
 			let { funY } = this.config;
 			let animationCanvas = document.createElement('canvas');
 			let animationCanvasContext = animationCanvas.getContext('2d');
-			animationCanvas.width = 402;
-			animationCanvas.height = 163;
-			let backgroundImg = await this.loadImg(this.config.backgroundImg);
+			animationCanvas.width = this.config.frameWidth;
+			animationCanvas.height = this.config.frameHeigh;
+			let backgroundImg;
+			if(this.config.backgroundImg){
+				backgroundImg = await this.loadImg(this.config.backgroundImg);
+			}
 			await this.initFrameArray();
 			let mergeFrame = this.mergeFrame();
 			if (typeof funY != 'function') {
@@ -82,11 +90,17 @@ class GifMaker extends BaseGif{
 				animationCanvasContext.clearRect(0,0,animationCanvas.width,animationCanvas.height);
 				this.gifCanvasContext.clearRect(0,0,this.config.width,this.config.height);
 
-				animationCanvasContext.drawImage(mergeFrame,0,y,402,163,0,0,402,163);
-
-				this.gifCanvasContext.drawImage(backgroundImg,0,0,this.width,this.height,0,0,this.width,this.height);
-				this.gifCanvasContext.drawImage(animationCanvas,0,0,402,163,87,92,407,178);
-				let delayTime = (frameIndex==0||frameIndex==11)?2000:40;
+				animationCanvasContext.drawImage(mergeFrame,0,y,this.config.frameWidth,this.config.frameHeigh,0,0,this.config.frameWidth,this.config.frameHeigh);
+				if(this.config.backgroundImg){
+					this.gifCanvasContext.drawImage(backgroundImg,0,0,this.width,this.height,0,0,this.width,this.height);
+				}
+				this.gifCanvasContext.drawImage(animationCanvas,0,0,this.config.frameWidth,this.config.frameHeigh,this.config.animationLoc.x,this.config.animationLoc.y,this.config.frameWidth,this.config.frameHeigh);
+				let delayTime;
+				if(frameIndex==0 || frameIndex==11){
+					delayTime = 4000;
+				}else{
+					delayTime = 10;
+				}
 				this.sectionArray.push({
 					img:this.gifCanvas.toDataURL('image/jpeg'),
 					delayTime
