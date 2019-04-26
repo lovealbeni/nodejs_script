@@ -1,11 +1,4 @@
 import BaseGif from './BaseGif';
-const halfOfPI = (Math.PI)/2;
-const DIRECTION = {
-	TOP: 'top', //向上
-	RIGHT: 'right', //向右
-	BOTTOM: 'bottom', //向下
-	LEFT: 'left' //向左
-};
 class GifMaker extends BaseGif{
 	// config 传入 画布大小
 	constructor(config) {
@@ -17,21 +10,9 @@ class GifMaker extends BaseGif{
 				height: 400,
 				img: [],
 				funX: percent => {
-					// return Math.sin(percent*halfOfPI);
 					return 0;
 				},
 				funY: percent => {
-					// if(percent<0.25){
-					// 	return 0;
-					// }else if(percent<0.5){
-					// 	percent=percent-0.25;
-					// 	return (4*percent)/3;
-					// }else if(percent<0.75){
-					// 	return 1/3;
-					// }else{
-					// 	percent=percent-0.5;
-					// 	return (4*percent)/3;
-					// }
 					return (2*percent)/3;
 				},
 				frameCount: 23
@@ -93,7 +74,6 @@ class GifMaker extends BaseGif{
 			backgroundCanvas.width = 621;
 			backgroundCanvas.height = 292;
 			let backgroundImg = await this.loadImg(this.config.backgroundImg);
-			backgroundCanvasContext.drawImage(backgroundImg,0,0,backgroundCanvas.width,backgroundCanvas.height,0,0,backgroundCanvas.width,backgroundCanvas.height);
 			await this.initFrameArray();
 			let animationCanvas = this.mergeFrame();
 			if (typeof funY != 'function') {
@@ -103,12 +83,12 @@ class GifMaker extends BaseGif{
 				let percent = frameIndex/this.config.frameCount;
 				let y = this.config.funY(percent);
 				y = y*animationCanvas.height;
+				backgroundCanvasContext.clearRect(0,0,backgroundCanvas.width,backgroundCanvas.height);
 				this.gifCanvasContext.clearRect(0,0,this.config.width,this.config.height);
-				this.gifCanvasContext.fillRect(0,0,this.config.width,this.config.height);
-				this.gifCanvasContext.drawImage(animationCanvas,0,y,this.config.width,this.config.height,0,0,this.config.width,this.config.height)
-				backgroundCanvasContext.clearRect(87,92,407,178);
-				backgroundCanvasContext.drawImage(this.gifCanvas,0,0,this.gifCanvas.width,this.gifCanvas.height,87,92,407,178);
-				let delayTime = (frameIndex==0&&frameIndex==10)?850:40;
+				this.gifCanvasContext.drawImage(animationCanvas,0,y,402,163,0,0,402,163);
+				backgroundCanvasContext.drawImage(backgroundImg,0,0,backgroundCanvas.width,backgroundCanvas.height,0,0,backgroundCanvas.width,backgroundCanvas.height);
+				backgroundCanvasContext.drawImage(this.gifCanvas,0,0,402,163,87,92,407,178);
+				let delayTime = (frameIndex==0||frameIndex==11)?850:40;
 				this.sectionArray.push({
 					img:backgroundCanvas.toDataURL('image/jpeg'),
 					delayTime
