@@ -37,7 +37,7 @@ class BaseGif{
 			let sectionArray = await this.genFrame();
 			let gif = new Gif({
 				worker: 500,
-				quality: 10,
+				quality: 50,
 				workerScript: 'gif.worker.js',
 				debug: true,
 				width: this.config.width,

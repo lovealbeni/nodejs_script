@@ -88,7 +88,7 @@ class GifMaker extends BaseGif{
 				this.gifCanvasContext.drawImage(animationCanvas,0,y,402,163,0,0,402,163);
 				backgroundCanvasContext.drawImage(backgroundImg,0,0,backgroundCanvas.width,backgroundCanvas.height,0,0,backgroundCanvas.width,backgroundCanvas.height);
 				backgroundCanvasContext.drawImage(this.gifCanvas,0,0,402,163,87,92,407,178);
-				let delayTime = (frameIndex==0||frameIndex==11)?850:40;
+				let delayTime = (frameIndex==0||frameIndex==11)?2000:40;
 				this.sectionArray.push({
 					img:backgroundCanvas.toDataURL('image/jpeg'),
 					delayTime
