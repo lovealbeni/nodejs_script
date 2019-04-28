@@ -15,7 +15,9 @@ class GifMaker extends BaseGif{
 				perPicHeight:163,
 				firstPicLoc:{x:0,y:0},
 				secondPicLoc:{x:239,y:0},
-				animationLoc:{x:87,y:92}
+				animationLoc:{x:87,y:92},
+				keyFrameDelay:2000,
+				otherFrameDelay:30
 			},
 			config
 		);
@@ -86,7 +88,7 @@ class GifMaker extends BaseGif{
 			if (typeof funY != 'function') {
 				throw new Error('arguments need function');
 			}
-			let step = this.config.frameHeigh/10;
+			let step = Math.ceil(this.config.frameHeigh/this.perFrameCount);
 			for(let frameIndex=0,sumCount=(this.frameArray.length-1)*this.perFrameCount;frameIndex<sumCount;frameIndex++){
 				let percent = frameIndex/this.perFrameCount;
 				let y = this.config.funY(percent);
@@ -100,10 +102,10 @@ class GifMaker extends BaseGif{
 				}
 				this.gifCanvasContext.drawImage(animationCanvas,0,0,this.config.frameWidth,this.config.frameHeigh,this.config.animationLoc.x,this.config.animationLoc.y,this.config.frameWidth,this.config.frameHeigh);
 				let delayTime;
-				if(frameIndex%10==0){
-					delayTime = 4000;
+				if(frameIndex%this.perFrameCount==0){
+					delayTime = this.config.keyFrameDelay;
 				}else{
-					delayTime = 10;
+					delayTime = this.config.otherFrameDelay;
 				}
 				this.sectionArray.push({
 					img:this.gifCanvas.toDataURL('image/jpeg'),
