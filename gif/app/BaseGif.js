@@ -1,15 +1,15 @@
-import Gif from './gif';
+import GIF from './gif';
 import Frame from './Frame';
 
-class BaseGif{
-    constructor(data){
+class BaseGif {
+	constructor(data) {
 		this.data = data;
-        
-        this.frameArray = [];
+
+		this.frameArray = [];
 		this.sectionArray = [];
-		
-		this.imgArray = data.img || [];//要制作gif的素材图片
-		
+
+		this.imgArray = data.img || []; //要制作gif的素材图片
+
 		// 整个gif的宽高
 		this.width = data.width || 400;
 		this.height = data.height || 400;
@@ -18,9 +18,9 @@ class BaseGif{
 		this.gifCanvasContext = this.gifCanvas.getContext('2d');
 		this.gifCanvas.width = this.width;
 		this.gifCanvas.height = this.height;
-		
+
 		this.perFrameCount = data.perFrameCount || 12;
-		
+
 		const GIFCONFIG = {
 			worker: 2,
 			quality: 50,
@@ -28,40 +28,39 @@ class BaseGif{
 			debug: false,
 			width: this.width,
 			height: this.height,
-			background:'#ffffff',
-			transparent:'#ffffff'
+			background: '#ffffff',
+			transparent: '#ffffff'
 		};
-		this.gifConfig = Object.assign(GIFCONFIG,data.gifConfig);
-
-    }
-    createFrame(config){
-        return new Frame(
+		this.gifConfig = Object.assign(GIFCONFIG, data.gifConfig);
+	}
+	createFrame(config) {
+		return new Frame(
 			Object.assign({ width: this.width, height: this.height }, config)
 		);
-    }
-    addFrame(frame){
-        if(!(frame instanceof Frame)){
-            throw new Error('need a Frame');
-        }
+	}
+	addFrame(frame) {
+		if (!(frame instanceof Frame)) {
+			throw new Error('need a Frame');
+		}
 		this.frameArray.push(frame.getCanvas());
-    }
-    genFrame(){}
-    loadImg(src){
-        return new Promise((resolve,reject) => {
+	}
+	genFrame() {}
+	loadImg(src) {
+		return new Promise((resolve, reject) => {
 			let img = new Image();
 			img.onload = function() {
 				resolve(img);
 			};
-			img.onerror = function(error){
+			img.onerror = function(error) {
 				reject(error);
-			}
+			};
 			img.src = src;
 		});
-    }
-    exportGif(){
-        return new Promise(async (resolve, reject) => {
+	}
+	exportGif() {
+		return new Promise(async (resolve, reject) => {
 			let sectionArray = await this.genFrame();
-			let gif = new Gif(this.gifConfig);
+			let gif = new GIF(this.gifConfig);
 			for (
 				let sectionIndex = 0, length = sectionArray.length;
 				sectionIndex < length;
@@ -78,6 +77,6 @@ class BaseGif{
 			});
 			gif.render();
 		});
-    }
+	}
 }
 export default BaseGif;
