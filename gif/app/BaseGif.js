@@ -27,9 +27,7 @@ class BaseGif {
 			workerScript: 'gif.worker.js',
 			debug: false,
 			width: this.width,
-			height: this.height,
-			background: '#ffffff',
-			transparent: '#ffffff'
+			height: this.height
 		};
 		this.gifConfig = Object.assign(GIFCONFIG, data.gifConfig);
 	}
@@ -60,6 +58,7 @@ class BaseGif {
 	exportGif() {
 		return new Promise(async (resolve, reject) => {
 			let sectionArray = await this.genFrame();
+			console.log('gifConfig',this.gifConfig);
 			let gif = new GIF(this.gifConfig);
 			for (
 				let sectionIndex = 0, length = sectionArray.length;
@@ -67,6 +66,7 @@ class BaseGif {
 				sectionIndex++
 			) {
 				let img = await this.loadImg(sectionArray[sectionIndex].img);
+				document.body.appendChild(img);
 				gif.addFrame(img, {
 					delay: sectionArray[sectionIndex].delayTime
 				});

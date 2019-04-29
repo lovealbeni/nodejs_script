@@ -10,7 +10,7 @@ class TextColum extends BaseGif{
                 frameWidth:792,
                 frameHeigh:34,
                 textArray:[],
-                animationLoc:{x:250,y:33},
+                animationLoc:{x:300,y:33},
                 keyFrameDelay:2000,
                 otherFrameDelay:30
             },
@@ -31,6 +31,9 @@ class TextColum extends BaseGif{
             svg.appendChild(path);
 
             let text = document.createElementNS('http://www.w3.org/2000/svg','text');
+            text.setAttribute('font-size','20');
+            text.setAttribute('fill','black');
+            // text.setAttribute('stroke','red');
             let textPath = document.createElementNS('http://www.w3.org/2000/svg','textPath');
             textPath.setAttributeNS('http://www.w3.org/1999/xlink','xlink:href','#textPath');
 
@@ -60,8 +63,8 @@ class TextColum extends BaseGif{
                 try{
                     frame.drawImage({
                         src:await this.initSvg(this.config.textArray[textIdx]),
-                        x:this.config.animationLoc.x,
-                        y:this.config.animationLoc.y,
+                        x:0,
+                        y:0,
                         width:this.config.frameWidth,
                         height:this.config.frameHeigh
                     })
@@ -85,7 +88,7 @@ class TextColum extends BaseGif{
         for(let frameIndex=0;frameIndex<this.frameArray.length;frameIndex++){
 			let frame = this.frameArray[frameIndex];
 			mergeCanvasContext.drawImage(frame,0,0,frame.width,frame.height,0,frame.height*frameIndex,frame.width,frame.height);
-		}
+        }
 		return mergeCanvas;
     }
     genFrame(){
@@ -108,16 +111,17 @@ class TextColum extends BaseGif{
 
 
                 let percent = (frameIndex%this.perFrameCount)/this.perFrameCount;//每一Frame中占比
-                let hasPassed = (frameIndex/this.perFrameCount)*this.config.frameHeigh;//已经经过的Frame;
+                let hasPassed = Math.floor((frameIndex/this.perFrameCount))*this.config.frameHeigh;//已经经过的Frame;
 				let y = this.config.funY(percent);
                 y = y*this.config.frameHeigh + hasPassed;
-                console.log(y);
 
 
 				animationCanvasContext.clearRect(0,0,animationCanvas.width,animationCanvas.height);
 				this.gifCanvasContext.clearRect(0,0,this.config.width,this.config.height);
 
-				animationCanvasContext.drawImage(mergeFrame,0,y,this.config.frameWidth,this.config.frameHeigh,0,0,this.config.frameWidth,this.config.frameHeigh);
+                // debugger
+                animationCanvasContext.drawImage(mergeFrame,0,y,this.config.frameWidth,this.config.frameHeigh,0,0,this.config.frameWidth,this.config.frameHeigh);
+                
 				if(this.config.backgroundImg){
 					this.gifCanvasContext.drawImage(backgroundImg,0,0,this.width,this.height,0,0,this.width,this.height);
 				}
@@ -129,7 +133,7 @@ class TextColum extends BaseGif{
 					delayTime = this.config.otherFrameDelay;
 				}
 				this.sectionArray.push({
-					img:this.gifCanvas.toDataURL('image/jpeg'),
+					img:this.gifCanvas.toDataURL('image/png'),
 					delayTime
 				});
             }

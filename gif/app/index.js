@@ -14,7 +14,13 @@
 import TextColum from './textColum';
 function main(){
 	let maker = new TextColum({
-		textArray:['123','456']
+		textArray:['123','456'],
+		width:1242,
+		height:101,
+		backgroundImg: './textBkg.jpg',
+		gifConfig:{
+			quality:1,
+		}
 	})
 	let dom = document.getElementById('gif');
 	maker.exportGif().then(src=>{
