@@ -19,8 +19,7 @@ function main(){
 		img: ['./1.png','./2.png','./3.png','./4.png','./2.png','./3.png'],
 		width:621,
 		height:292,
-		backgroundImg:'./background.jpg',
-		perFrameCount:40
+		backgroundImg:'./background.jpg'
 	});
 	let dom2 = document.getElementById('gif2');
 	maker2.exportGif().then(src => {
