@@ -1,11 +1,12 @@
 import BaseGif from './BaseGif';
+const halfPI = (Math.PI)/2;
 class TextColum extends BaseGif{
     constructor(config){
         super(config);
         this.config = Object.assign(
             {
                 funY:percent=>{
-                    return ( (this.frameArray.length-1)*percent )/this.frameArray.length;
+                    return Math.sin(percent*halfPI);
                 },
                 frameWidth:792,
                 frameHeigh:34,
@@ -110,10 +111,10 @@ class TextColum extends BaseGif{
             if(typeof funY != 'function'){
                 throw new Error('arguments need function');
             }
-			let step = Math.ceil(this.config.frameHeigh/this.perFrameCount);
             for(let frameIndex=0,sumCount=(this.frameArray.length-1)*this.perFrameCount;frameIndex<sumCount;frameIndex++){
-                let y = step*frameIndex
-
+                let step = (frameIndex%this.perFrameCount)/(this.perFrameCount-1);
+                let hasPassed = Math.floor(frameIndex/this.perFrameCount);
+                let y = funY(step)*this.config.frameHeigh + hasPassed*this.config.frameHeigh;
 
 				animationCanvasContext.clearRect(0,0,animationCanvas.width,animationCanvas.height);
 				this.gifCanvasContext.clearRect(0,0,this.config.width,this.config.height);
@@ -128,14 +129,13 @@ class TextColum extends BaseGif{
 				if(frameIndex%this.perFrameCount==0){
 					delayTime = this.config.keyFrameDelay;
 				}else{
-					delayTime = this.config.otherFrameDelay;
+                    delayTime = this.config.otherFrameDelay;
 				}
 				this.sectionArray.push({
 					img:this.gifCanvas.toDataURL('image/png'),
 					delayTime
 				});
             }
-            console.log('sectionArray',this.sectionArray);
             resolve(this.sectionArray);
         });
     }

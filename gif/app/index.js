@@ -20,7 +20,7 @@ function main(){
 		backgroundImg: './textBkg.jpg',
 		gifConfig:{
 			quality:1,
-			debug:true
+			debug:false
 		}
 	})
 	let dom = document.getElementById('gif');

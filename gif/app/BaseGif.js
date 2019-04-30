@@ -58,7 +58,6 @@ class BaseGif {
 	exportGif() {
 		return new Promise(async (resolve, reject) => {
 			let sectionArray = await this.genFrame();
-			console.log('gifConfig',this.gifConfig);
 			let gif = new GIF(this.gifConfig);
 			for (
 				let sectionIndex = 0, length = sectionArray.length;
