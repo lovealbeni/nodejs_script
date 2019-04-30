@@ -13,7 +13,7 @@ class TextColum extends BaseGif{
                 animationLoc:{x:300,y:33},
                 keyFrameDelay:2000,
                 otherFrameDelay:30,
-                fontSize:20
+                fontSize:34
             },
             config
         )
@@ -27,14 +27,13 @@ class TextColum extends BaseGif{
 
             let path = document.createElementNS('http://www.w3.org/2000/svg','path');
             path.setAttribute('id','textPath');
-            path.setAttribute('d',`M0 ${(svgHeight/2)+10} H ${svgWidth}`);
+            path.setAttribute('d',`M0 ${((svgHeight+this.config.fontSize)/2)} H ${svgWidth}`);
         
             svg.appendChild(path);
 
             let text = document.createElementNS('http://www.w3.org/2000/svg','text');
-            text.setAttribute('font-size','20');
+            text.setAttribute('font-size',this.config.fontSize);
             text.setAttribute('fill','black');
-            // text.setAttribute('stroke','red');
             let textPath = document.createElementNS('http://www.w3.org/2000/svg','textPath');
             textPath.setAttributeNS('http://www.w3.org/1999/xlink','xlink:href','#textPath');
 
