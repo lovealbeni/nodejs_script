@@ -1,4 +1,5 @@
 import BaseGif from './BaseGif';
+const halfPI = (Math.PI)/2;
 class GifMaker extends BaseGif{
 	// config 传入 画布大小
 	constructor(config) {
@@ -7,7 +8,7 @@ class GifMaker extends BaseGif{
 		this.config = Object.assign(
 			{
 				funY: percent => {
-					return (2*percent)/3;
+					return Math.sin(percent*halfPI);
 				},
 				frameWidth:402,
 				frameHeigh:163,
@@ -21,9 +22,9 @@ class GifMaker extends BaseGif{
 			},
 			config
 		);
-		this.config.funY = percent=>{
-			return ( (this.frameArray.length-1)*percent )/this.frameArray.length;
-		}
+		// this.config.funY = percent=>{
+		// 	return ( (this.frameArray.length-1)*percent )/this.frameArray.length;
+		// }
 		this.gifCanvasContext.fillStyle = 'rgb(255,255,255)';
 	}
 	initFrameArray(){
@@ -88,11 +89,12 @@ class GifMaker extends BaseGif{
 			if (typeof funY != 'function') {
 				throw new Error('arguments need function');
 			}
-			let step = Math.ceil(this.config.frameHeigh/this.perFrameCount);
+			// let step = Math.ceil(this.config.frameHeigh/this.perFrameCount);
 			for(let frameIndex=0,sumCount=(this.frameArray.length-1)*this.perFrameCount;frameIndex<sumCount;frameIndex++){
-				let percent = frameIndex/this.perFrameCount;
-				let y = this.config.funY(percent);
-				y = step*frameIndex;
+				let step = (frameIndex%this.perFrameCount)/(this.perFrameCount-1);
+                let hasPassed = Math.floor(frameIndex/this.perFrameCount);
+                let y = funY(step)*this.config.frameHeigh + hasPassed*this.config.frameHeigh;
+				
 				animationCanvasContext.clearRect(0,0,animationCanvas.width,animationCanvas.height);
 				this.gifCanvasContext.clearRect(0,0,this.config.width,this.config.height);
 
@@ -112,7 +114,6 @@ class GifMaker extends BaseGif{
 					delayTime
 				});
 			}
-			console.log('genFrame',this.sectionArray);
 			resolve(this.sectionArray);
 		});
 	}
