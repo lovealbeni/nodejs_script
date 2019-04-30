@@ -66,7 +66,6 @@ class BaseGif {
 				sectionIndex++
 			) {
 				let img = await this.loadImg(sectionArray[sectionIndex].img);
-				document.body.appendChild(img);
 				gif.addFrame(img, {
 					delay: sectionArray[sectionIndex].delayTime
 				});

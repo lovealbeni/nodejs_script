@@ -12,7 +12,8 @@ class TextColum extends BaseGif{
                 textArray:[],
                 animationLoc:{x:300,y:33},
                 keyFrameDelay:2000,
-                otherFrameDelay:30
+                otherFrameDelay:30,
+                fontSize:20
             },
             config
         )
@@ -26,7 +27,7 @@ class TextColum extends BaseGif{
 
             let path = document.createElementNS('http://www.w3.org/2000/svg','path');
             path.setAttribute('id','textPath');
-            path.setAttribute('d',`M0 ${svgHeight/2} H ${svgWidth}`);
+            path.setAttribute('d',`M0 ${(svgHeight/2)+10} H ${svgWidth}`);
         
             svg.appendChild(path);
 
@@ -40,6 +41,9 @@ class TextColum extends BaseGif{
             textPath.innerHTML = str;
             text.appendChild(textPath);
             svg.appendChild(text);
+            
+            document.body.appendChild(svg);
+
 
             let serializer = new XMLSerializer();
             let svgStr = serializer.serializeToString(svg);
@@ -107,19 +111,14 @@ class TextColum extends BaseGif{
             if(typeof funY != 'function'){
                 throw new Error('arguments need function');
             }
+			let step = Math.ceil(this.config.frameHeigh/this.perFrameCount);
             for(let frameIndex=0,sumCount=(this.frameArray.length-1)*this.perFrameCount;frameIndex<sumCount;frameIndex++){
-
-
-                let percent = (frameIndex%this.perFrameCount)/this.perFrameCount;//每一Frame中占比
-                let hasPassed = Math.floor((frameIndex/this.perFrameCount))*this.config.frameHeigh;//已经经过的Frame;
-				let y = this.config.funY(percent);
-                y = y*this.config.frameHeigh + hasPassed;
+                let y = step*frameIndex
 
 
 				animationCanvasContext.clearRect(0,0,animationCanvas.width,animationCanvas.height);
 				this.gifCanvasContext.clearRect(0,0,this.config.width,this.config.height);
 
-                // debugger
                 animationCanvasContext.drawImage(mergeFrame,0,y,this.config.frameWidth,this.config.frameHeigh,0,0,this.config.frameWidth,this.config.frameHeigh);
                 
 				if(this.config.backgroundImg){
@@ -167,6 +166,7 @@ function svg(){
     text.appendChild(textPath);
     svg.appendChild(text);
 
+    document.body.appendChild(svg);
     
 
 

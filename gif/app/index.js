@@ -20,12 +20,14 @@ function main(){
 		backgroundImg: './textBkg.jpg',
 		gifConfig:{
 			quality:1,
+			debug:true
 		}
 	})
 	let dom = document.getElementById('gif');
 	maker.exportGif().then(src=>{
 		dom.src = src;
 	});
+	// TextColum();
 }
 window.onload = main;
 export default main;
