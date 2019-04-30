@@ -41,8 +41,6 @@ class TextColum extends BaseGif{
             textPath.innerHTML = str;
             text.appendChild(textPath);
             svg.appendChild(text);
-            
-            document.body.appendChild(svg);
 
 
             let serializer = new XMLSerializer();
