@@ -1,16 +1,4 @@
-// import GifMaker from './imgTogif';
-// function main() {
-// 	let maker = new GifMaker({
-// 		img: ['./1.png','./2.png','./3.png','./4.png','./2.png','./3.png'],
-// 		width:621,
-// 		height:292,
-// 		backgroundImg:'./background.jpg',
-// 	});
-// 	let dom = document.getElementById('gif');
-// 	maker.exportGif().then(src => {
-// 		dom.src = src;
-// 	});
-// }
+import GifMaker from './imgTogif';
 import TextColum from './textColum';
 function main(){
 	let maker = new TextColum({
@@ -27,7 +15,17 @@ function main(){
 	maker.exportGif().then(src=>{
 		dom.src = src;
 	});
-	// TextColum();
+	let maker2 = new GifMaker({
+		img: ['./1.png','./2.png','./3.png','./4.png','./2.png','./3.png'],
+		width:621,
+		height:292,
+		backgroundImg:'./background.jpg',
+		perFrameCount:40
+	});
+	let dom2 = document.getElementById('gif2');
+	maker2.exportGif().then(src => {
+		dom2.src = src;
+	});
 }
 window.onload = main;
 export default main;
