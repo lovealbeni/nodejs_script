@@ -13,6 +13,7 @@
     "webpack-cli": "^3.3.0"
   },
   "dependencies": {
+    "three": "^0.104.0",
     "webpack": "^4.30.0"
   }
 }

@@ -9,6 +9,7 @@ class GifMaker extends BaseGif{
 			{
 				funY: percent => {
 					return Math.sin(percent*halfPI);
+					// return percent;
 				},
 				frameWidth:402,
 				frameHeigh:163,
