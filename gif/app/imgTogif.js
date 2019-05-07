@@ -1,15 +1,12 @@
 import BaseGif from './BaseGif';
 const halfPI = (Math.PI)/2;
 class GifMaker extends BaseGif{
-	// config 传入 画布大小
 	constructor(config) {
-		// todo:检查运行环境,config参数
 		super(config);
 		this.config = Object.assign(
 			{
 				funY: percent => {
 					return Math.sin(percent*halfPI);
-					// return percent;
 				},
 				frameWidth:402,
 				frameHeigh:163,
@@ -23,9 +20,6 @@ class GifMaker extends BaseGif{
 			},
 			config
 		);
-		// this.config.funY = percent=>{
-		// 	return ( (this.frameArray.length-1)*percent )/this.frameArray.length;
-		// }
 		this.gifCanvasContext.fillStyle = 'rgb(255,255,255)';
 	}
 	initFrameArray(){
@@ -44,13 +38,15 @@ class GifMaker extends BaseGif{
 						width:this.config.perPicWidth,
 						height:this.config.perPicHeight
 					});
-					frame.drawImage({
-						src:await this.loadImg(this.config.img[imgIndex+1]),
-						x:this.config.secondPicLoc.x,
-						y:this.config.secondPicLoc.y,
-						width:this.config.perPicWidth,
-						height:this.config.perPicHeight
-					});
+					if(this.config.img.length>imgIndex+1){
+						frame.drawImage({
+							src:await this.loadImg(this.config.img[imgIndex+1]),
+							x:this.config.secondPicLoc.x,
+							y:this.config.secondPicLoc.y,
+							width:this.config.perPicWidth,
+							height:this.config.perPicHeight
+						});
+					}
 				} catch (error) {
 					throw new Error(error);
 				}
@@ -90,7 +86,6 @@ class GifMaker extends BaseGif{
 			if (typeof funY != 'function') {
 				throw new Error('arguments need function');
 			}
-			// let step = Math.ceil(this.config.frameHeigh/this.perFrameCount);
 			for(let frameIndex=0,sumCount=(this.frameArray.length-1)*this.perFrameCount;frameIndex<sumCount;frameIndex++){
 				let step = (frameIndex%this.perFrameCount)/(this.perFrameCount-1);
                 let hasPassed = Math.floor(frameIndex/this.perFrameCount);
