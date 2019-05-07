@@ -5,8 +5,12 @@ var proxy = httpProxy.createProxyServer({});
 
 // 访问地址
 var server = http.createServer(function(req,res){
+    console.log(req.headers.host);
+    console.log('*'.repeat(10));
     proxy.web(req,res,{
-        target: 'http://localhost:7300'
+        target: req.headers.host
     });
 });
 server.listen(5050);
+
+http.request()

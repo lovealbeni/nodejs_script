@@ -24,17 +24,21 @@ class ThreeGif {
 
         var textureLoader = new THREE.TextureLoader();
 		var texture = textureLoader.load('../../earth.jpg');
-		var material = new THREE.MeshBasicMaterial({ map: texture });
+		var material = new THREE.MeshPhongMaterial({ map: texture,bumpMap:texture });
 		var sphere = new THREE.SphereGeometry(1, 20, 20);
 		var mesh = new THREE.Mesh(sphere, material);
 		scene.add(mesh);
 
+		var spotLight = new THREE.SpotLight('#ffffff');
+		spotLight.position.set(-40,60,-10);
+		spotLight.target = mesh;
+		scene.add(spotLight);
+
 		function animate() {
 			requestAnimationFrame(animate);
-			mesh.rotation.y += 0.05;
+			mesh.rotation.y += 0.005;
 			render.render(scene, camera);
 		}
-
 		animate();
 	}
 }
