@@ -46,7 +46,7 @@ class TextColum extends BaseGif{
             let serializer = new XMLSerializer();
             let svgStr = serializer.serializeToString(svg);
             try {
-                let img = await this.loadImg('data:image/svg+xml;base64,'+window.btoa(unescape(encodeURIComponent(svg))));
+                let img = await this.loadImg('data:image/svg+xml;base64,'+window.btoa(unescape(encodeURIComponent(svgStr))));
                 resolve(img);
             } catch (error) {
                 reject(error);
