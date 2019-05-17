@@ -9,12 +9,12 @@ class TextColum extends BaseGif{
                     return Math.sin(percent*halfPI);
                 },
                 frameWidth:792,
-                frameHeigh:34,
+                frameHeigh:40,
                 textArray:[],
-                animationLoc:{x:300,y:33},
+                animationLoc:{x:300,y:27},
                 keyFrameDelay:2000,
                 otherFrameDelay:30,
-                fontSize:34
+                fontSize:40
             },
             config
         )
