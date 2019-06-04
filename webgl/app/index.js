@@ -1,47 +1,34 @@
 import shader from './vshader';
 import Matrix from './cuon-matrix';
+import vshaderSource from './vshader.glsl';
+import fshaderSource from './fshader.glsl';
 function main(){
-    var matrix = new Matrix.Matrix4();
-    var VSHADER_SOURCE = shader.VSHADER_SOURCE;
-    var FSHADER_SOURCE = shader.FSHADER_SOURCE;
     var canvas = document.createElement('canvas');
-    canvas.height = window.innerHeight*0.8;
-    canvas.width = canvas.height;
+    canvas.width = document.body.clientWidth;
+    canvas.height = canvas.width * 0.6;
     var gl = canvas.getContext('webgl');
-    
-    var vshader = gl.createShader(gl.VERTEX_SHADER);
-    gl.shaderSource(vshader,VSHADER_SOURCE);
-    gl.compileShader(vshader);
 
-    var fshader = gl.createShader(gl.FRAGMENT_SHADER);
-    gl.shaderSource(fshader,FSHADER_SOURCE);
-    gl.compileShader(fshader);
+    var vertexShader = gl.createShader(gl.VERTEX_SHADER);
+    gl.shaderSource(vertexShader,vshaderSource);
+    gl.compileShader(vertexShader);
+    var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+    gl.shaderSource(fragmentShader,fshaderSource);
+    gl.compileShader(fragmentShader);
 
-    var programe = gl.createProgram();
-    gl.attachShader(programe,vshader);
-    gl.attachShader(programe,fshader);
-    gl.linkProgram(programe);
-    gl.useProgram(programe);
-    
-    var a_Position = gl.getAttribLocation(programe,'a_Position');
+    var program = gl.createProgram();
+    gl.attachShader(program,vertexShader);
+    gl.attachShader(program,fragmentShader);
+
+    gl.linkProgram(program);
+    gl.useProgram(program);
+
+
+
+    // 开始画
     gl.clearColor(0.0,0.0,0.0,1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
-    var vertices = new Float32Array([
-        0.0,0.3,-0.3,-0.3,0.3,-0.3
-    ]);
-    var point_n = 3;
-    var vertexBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER,vertexBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER,vertices,gl.STATIC_DRAW);
-    gl.vertexAttribPointer(a_Position,2,gl.FLOAT,false,0,0);
-    gl.enableVertexAttribArray(a_Position);
+    gl.drawArrays(gl.POINTS,0,1);
 
-    matrix.translate(0.5,0,0);
-    matrix.setRotate(60.0,0,0,1);
-    var u_xformMatrix = gl.getUniformLocation(programe,'u_xformMatrix');
-    gl.uniformMatrix4fv(u_xformMatrix,false,matrix.elements);
-    
-    gl.drawArrays(gl.TRIANGLE_STRIP,0,point_n);
     attach(canvas);
 }
 function attach(dom){

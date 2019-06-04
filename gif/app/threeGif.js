@@ -4,42 +4,44 @@ class ThreeGif {
 		this.data = data;
 	}
 	export() {
+
+		var textureLoader = new THREE.TextureLoader();
+		var texture = textureLoader.load('../../1.png');
+
+
 		var scene = new THREE.Scene();
-		var camera = new THREE.PerspectiveCamera(
-			45,
-			window.innerWidth / window.innerHeight,
-			0.1,
-			1000
-		);
-		camera.position.z = 5;
+
+		var camera = new THREE.PerspectiveCamera(45,window.innerWidth/window.innerHeight,0.1,1000);
 
 		var render = new THREE.WebGLRenderer();
-        render.setSize(window.innerWidth, window.innerHeight);
+		render.setClearColor(0xEEEEEE);
+		render.setSize(window.innerWidth,window.innerHeight);
 
-        var color = new THREE.Color();
-        color.setHex('0xffffff');
+		var planeGeo = new THREE.PlaneGeometry(30,20,1,1);
+		var planeMaterial = new THREE.MeshBasicMaterial({
+			color:0xcccccc,
+			side:THREE.DoubleSide,
+			map:texture
+		});
+		var plane = new THREE.Mesh(planeGeo,planeMaterial);
+		plane.rotation.x = -0.5*Math.PI;
+		plane.position.set(15,0,0);
+		scene.add(plane);
 
-        render.setClearColor(color);
+		var axes = new THREE.AxesHelper(20);
+		scene.add(axes);
+
+		camera.position.set(0,40,40);
+		camera.lookAt(scene.position);
 		document.body.appendChild(render.domElement);
-
-        var textureLoader = new THREE.TextureLoader();
-		var texture = textureLoader.load('../../earth.jpg');
-		var material = new THREE.MeshPhongMaterial({ map: texture,bumpMap:texture });
-		var sphere = new THREE.SphereGeometry(1, 20, 20);
-		var mesh = new THREE.Mesh(sphere, material);
-		scene.add(mesh);
-
-		var spotLight = new THREE.SpotLight('#ffffff');
-		spotLight.position.set(-40,60,-10);
-		spotLight.target = mesh;
-		scene.add(spotLight);
-
-		function animate() {
-			requestAnimationFrame(animate);
-			mesh.rotation.y += 0.005;
-			render.render(scene, camera);
+		renderding();
+		var step = 0;
+		function renderding(){
+			step += 0.01;
+			plane.rotation.x = step;
+			requestAnimationFrame(renderding);
+			render.render(scene,camera);	
 		}
-		animate();
 	}
 }
 
