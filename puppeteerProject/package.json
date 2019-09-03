@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "gifencoder": "^2.0.1",
     "puppeteer-core": "^1.12.2"
   }
 }

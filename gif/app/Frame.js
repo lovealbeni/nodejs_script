@@ -18,4 +18,5 @@ class Frame{
         return this.frameCanvas.toDataURL(type);
     }
 }
-export default Frame;
+// export default Frame;
+module.exports = Frame;

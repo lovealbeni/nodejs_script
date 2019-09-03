@@ -2,8 +2,8 @@ import GifMaker from './imgTogif';
 import TextColum from './textColum';
 import ThreeGif from './threeGif';
 function main(){
-	let gif = new ThreeGif();
-	gif.export();
+	// let gif = new ThreeGif();
+	// gif.export();
 	// let maker = new TextColum({
 	// 	textArray:['123','456'],	
 	// 	width:1242,
@@ -32,20 +32,23 @@ function main(){
 	// 	dom2.src = src;
 	// });
 
-	// new GifMaker({
-	// 	img: ['./1.png','./2.png','./3.png','./4.png','./2.png','./3.png'],
-	// 	width:621,
-	// 	height:292,
-	// 	backgroundImg:'./background.jpg',
-	// 	funY:percent=>{
-	// 		return percent;
-	// 	}
-	// }).exportGif().then(src=>{
-	// 	let dom = document.createElement('img');
-	// 	dom.src = src;
-	// 	dom.className = 'linear';
-	// 	document.body.appendChild( dom );
-	// });
+	new GifMaker({
+		img: ['./1.png','./2.png','./3.png','./4.png','./2.png','./3.png'],
+		width:621,
+		height:292,
+		backgroundImg:'./background.jpg',
+		funY:percent=>{
+			return percent;
+		}
+	}).exportGif().then(src=>{
+		let dom = document.createElement('img');
+		dom.src = src;
+		dom.className = 'linear';
+		document.body.appendChild( dom );
+	});
 }
-window.onload = main;
+// window.onload = main;
+document.querySelector('button').onclick = function(){
+	main();
+}
 export default main;
