@@ -25,9 +25,26 @@ function main(){
 
 
     // 开始画
+    var positions = [1,0,0,1,0,0];
+    var a_Position = gl.getAttribLocation(program,'a_Position');
+    var buffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER,buffer);
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(positions),gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(a_Position);
+    var size = 2;
+    var type = gl.FLOAT;
+    var normalize = false;
+    var stride = 0;
+    var offset = 0;
+    gl.vertexAttribPointer(a_Position,size,type,normalize,stride,offset);
+
     gl.clearColor(0.0,0.0,0.0,1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.drawArrays(gl.POINTS,0,1);
+
+    var primitiveType = gl.TRIANGLES;
+    var offset = 0;
+    var count = 3;
+    gl.drawArrays(primitiveType,offset,count);
 
     attach(canvas);
 }
