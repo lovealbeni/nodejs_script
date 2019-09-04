@@ -25,7 +25,7 @@ function main(){
 
 
     // 开始画
-    var positions = [1,0,0,1,0,0];
+    var positions = [300,20,20,300,300,300];
     var a_Position = gl.getAttribLocation(program,'a_Position');
     var buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER,buffer);
@@ -37,6 +37,13 @@ function main(){
     var stride = 0;
     var offset = 0;
     gl.vertexAttribPointer(a_Position,size,type,normalize,stride,offset);
+
+    // 获取屏幕尺寸
+    var a_Screen_size = gl.getAttribLocation(program,'a_Screen_size');
+    gl.vertexAttrib2f(a_Screen_size,canvas.width,canvas.height);
+    // 传颜色
+    var u_Color = gl.getUniformLocation(program,'u_Color');
+    gl.uniform4f(u_Color,255,249,123,1);
 
     gl.clearColor(0.0,0.0,0.0,1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
