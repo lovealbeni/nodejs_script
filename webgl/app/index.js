@@ -25,7 +25,10 @@ function main(){
 
 
     // 开始画
-    var positions = [300,20,20,300,300,300];
+    var positions = [
+        300,20,20,300,300,300,
+        400,20,30,300,350,300
+    ];
     var a_Position = gl.getAttribLocation(program,'a_Position');
     var buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER,buffer);
@@ -42,15 +45,28 @@ function main(){
     var a_Screen_size = gl.getAttribLocation(program,'a_Screen_size');
     gl.vertexAttrib2f(a_Screen_size,canvas.width,canvas.height);
     // 传颜色
-    var u_Color = gl.getUniformLocation(program,'u_Color');
-    gl.uniform4f(u_Color,255,249,123,1);
+    var a_Color = gl.getAttribLocation(program,'a_Color');
+    var colors = [
+        234,123,124,1,
+        145,156,167,1,
+        187,186,166,1,
+        234,123,124,1,
+        145,156,167,1,
+        187,186,166,1
+    ]
+    var colorBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER,colorBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(colors),gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(a_Color);
+    var colorSize = 4;
+    gl.vertexAttribPointer(a_Color,colorSize,type,normalize,stride,offset);
 
     gl.clearColor(0.0,0.0,0.0,1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
 
     var primitiveType = gl.TRIANGLES;
     var offset = 0;
-    var count = 3;
+    var count = 6;
     gl.drawArrays(primitiveType,offset,count);
 
     attach(canvas);
