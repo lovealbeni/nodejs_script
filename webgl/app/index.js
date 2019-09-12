@@ -26,9 +26,15 @@ function main(){
 
     // 开始画
     var positions = [
-        300,20,20,300,300,300,
-        400,20,30,300,350,300
+        30,30,
+        30,300,
+        300,300,
+        300,30
     ];
+    var indices = [
+        0,1,2,
+        0,2,3
+    ]
     var a_Position = gl.getAttribLocation(program,'a_Position');
     var buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER,buffer);
@@ -41,6 +47,11 @@ function main(){
     var offset = 0;
     //  顶点属性指针
     gl.vertexAttribPointer(a_Position,size,type,normalize,stride,offset);
+
+    // 顶点buffer
+    var indicesBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,indicesBuffer);
+
 
     // 获取屏幕尺寸
     var a_Screen_size = gl.getAttribLocation(program,'a_Screen_size');
@@ -68,7 +79,8 @@ function main(){
     var primitiveType = gl.TRIANGLES;
     var offset = 0;
     var count = 6;
-    gl.drawArrays(primitiveType,offset,count);
+    // gl.drawArrays(primitiveType,offset,count);
+    gl.drawElements(gl.TRIANGLES,6,gl.UNSIGNED_SHORT)
 
     attach(canvas);
 }
