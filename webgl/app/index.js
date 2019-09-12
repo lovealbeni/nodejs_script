@@ -39,6 +39,7 @@ function main(){
     var normalize = false;
     var stride = 0;
     var offset = 0;
+    //  顶点属性指针
     gl.vertexAttribPointer(a_Position,size,type,normalize,stride,offset);
 
     // 获取屏幕尺寸
