@@ -51,7 +51,7 @@ function main(){
     // 顶点buffer
     var indicesBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,indicesBuffer);
-
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint16Array(indices),gl.STATIC_DRAW);
 
     // 获取屏幕尺寸
     var a_Screen_size = gl.getAttribLocation(program,'a_Screen_size');
@@ -80,7 +80,7 @@ function main(){
     var offset = 0;
     var count = 6;
     // gl.drawArrays(primitiveType,offset,count);
-    gl.drawElements(gl.TRIANGLES,6,gl.UNSIGNED_SHORT)
+    gl.drawElements(primitiveType,count,gl.UNSIGNED_SHORT,offset)
 
     attach(canvas);
 }
