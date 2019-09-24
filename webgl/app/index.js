@@ -26,10 +26,10 @@ function main(){
 
     // 开始画,position 包括x,y&color
     var positions = [
-        30,30,234,123,124,1,
-        30,300,145,156,167,1,
-        300,300,187,186,166,1,
-        300,30,187,186,166,1
+        30,30,255,0,0,1,
+        30,300,0,255,0,1,
+        300,300,0,0,255,1,
+        300,30,128,128,128,1
     ];
     var indices = [
         0,1,2,
@@ -80,9 +80,9 @@ function main(){
 
     var primitiveType = gl.TRIANGLE_FAN;
     var offset = 0;
-    var count = 6;
-    // gl.drawArrays(primitiveType,offset,count);
-    gl.drawElements(primitiveType,count,gl.UNSIGNED_SHORT,offset)
+    var count = 4;
+    gl.drawArrays(primitiveType,offset,count);
+    // gl.drawElements(primitiveType,count,gl.UNSIGNED_SHORT,offset)
 
     attach(canvas);
 }
