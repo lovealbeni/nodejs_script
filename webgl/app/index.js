@@ -31,6 +31,12 @@ function main(){
         300,300,0,0,255,1,
         300,30,128,128,128,1
     ];
+    positions = prepareCirclePointsAndcolors({
+        x:400,
+        y:200,
+        r:100,
+        n:100
+    });
     var indices = [
         0,1,2,
         0,2,3
@@ -58,6 +64,7 @@ function main(){
     gl.vertexAttrib2f(a_Screen_size,canvas.width,canvas.height);
     // 传颜色
     var a_Color = gl.getAttribLocation(program,'a_Color');
+
     // 把color 和 position 放在一个buffer里面
     // var colors = [
     //     234,123,124,1,
@@ -70,6 +77,7 @@ function main(){
     // var colorBuffer = gl.createBuffer();
     // gl.bindBuffer(gl.ARRAY_BUFFER,colorBuffer);
     // gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(colors),gl.STATIC_DRAW);
+    
     gl.enableVertexAttribArray(a_Color);
     var colorSize = 4;
     var colorOffset = 2*4;//color的偏移量= position's size
@@ -81,6 +89,7 @@ function main(){
     var primitiveType = gl.TRIANGLE_FAN;
     var offset = 0;
     var count = 4;
+    count = positions.length/6;//和stride的值相等，生成的数组里面有6个坐标形成一个点，所以要/6
     gl.drawArrays(primitiveType,offset,count);
     // gl.drawElements(primitiveType,count,gl.UNSIGNED_SHORT,offset)
 
@@ -91,3 +100,17 @@ function attach(dom){
     body.appendChild(dom);
 }
 window.onload = main;
+
+function prepareCirclePointsAndcolors({x,y,r,n}){
+    // x,y 圆心坐标
+    // r 半径
+    // n 三角形个数
+    var pointsAndColors = [];
+    // 首先放入第一个点
+    pointsAndColors.push(x,y,0,255,0,1);
+    var sin = Math.sin,cos = Math.cos,pi = 2*Math.PI;
+    for(var i=0;i<=n;i++){
+        pointsAndColors.push(x+r*cos(i*(pi/n)),y+r*sin(i*(pi/n)),255,0,0,1);
+    }
+    return pointsAndColors;
+}
