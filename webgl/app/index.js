@@ -93,7 +93,28 @@ function main(){
     gl.drawArrays(primitiveType,offset,count);
     // gl.drawElements(primitiveType,count,gl.UNSIGNED_SHORT,offset)
 
+
+    drawAnotherCircle(gl);
+
     attach(canvas);
+}
+function drawAnotherCircle(gl){
+    // 这个方法是用来画另外一个圆用的，形成的和上面画圆的代码一样的圆，画出了另外一个
+    // 这个地方和教程里面提到的动态绘制三角的地方很像，不同的是在动态绘制三角的时候，之所以要把上一次绘制的
+    // 点保留下来，是因为在之前设置了clear画布，所以每一次要绘制所有的点，而这里没有清空数据，只是把所有的数据都存了起来，所以不需要保存之前的点
+    // 依然可以在之前的基础上，直接画出这一次的点
+    var primitiveType = gl.TRIANGLE_FAN;
+    var offset = 0;
+    var count = 4;
+    var positions = prepareCirclePointsAndcolors({
+        x: 600,
+        y: 200,
+        r: 100,
+        n: 100
+    });
+    count = positions.length/6;
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(positions),gl.STATIC_DRAW);
+    gl.drawArrays(primitiveType,offset,count);
 }
 function attach(dom){
     var body = document.querySelector('body');
