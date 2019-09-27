@@ -2,6 +2,7 @@ import shader from './vshader';
 import Matrix from './cuon-matrix';
 import vshaderSource from './vshader.glsl';
 import fshaderSource from './fshader.glsl';
+// import * as vshaderSource from './vshader.glsl';
 function main(){
     var canvas = document.createElement('canvas');
     canvas.width = document.body.clientWidth;
@@ -98,7 +99,7 @@ function main(){
 
     attach(canvas);
 }
-function drawAnotherCircle(gl){
+function drawAnotherCircle(gl:WebGLRenderingContext){
     // 这个方法是用来画另外一个圆用的，形成的和上面画圆的代码一样的圆，画出了另外一个
     // 这个地方和教程里面提到的动态绘制三角的地方很像，不同的是在动态绘制三角的时候，之所以要把上一次绘制的
     // 点保留下来，是因为在之前设置了clear画布，所以每一次要绘制所有的点，而这里没有清空数据，只是把所有的数据都存了起来，所以不需要保存之前的点
@@ -116,7 +117,7 @@ function drawAnotherCircle(gl){
     gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(positions),gl.STATIC_DRAW);
     gl.drawArrays(primitiveType,offset,count);
 }
-function attach(dom){
+function attach(dom:HTMLElement){
     var body = document.querySelector('body');
     body.appendChild(dom);
 }

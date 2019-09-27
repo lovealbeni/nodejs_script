@@ -6,10 +6,17 @@ module.exports = {
 			{
 				test: /\.glsl$/,
 				use: 'raw-loader'
+			},
+			{
+				test: /\.ts$/,
+				use: 'ts-loader'
 			}
 		]
 	},
-	entry: './app/index.js',
+	resolve:{
+		extensions:[".ts",".js"]
+	},
+	entry: './app/index.ts',
 	output:{
 		filename:'bundle.js',
 		path: path.resolve(__dirname,'dist'),
