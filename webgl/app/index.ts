@@ -36,7 +36,7 @@ function main(){
         x:400,
         y:200,
         r:100,
-        n:100
+        n:50
     });
     var indices = [
         0,1,2,
@@ -95,7 +95,7 @@ function main(){
     // gl.drawElements(primitiveType,count,gl.UNSIGNED_SHORT,offset)
 
 
-    drawAnotherCircle(gl);
+    // drawAnotherCircle(gl);
 
     attach(canvas);
 }
