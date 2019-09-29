@@ -175,7 +175,7 @@ function prepareTexturePositions(){
 
 function prepareTextureImg(url:String){
     // 准备纹理贴图的
-    return new Promise((resove,reject)=>{
+    return new Promise<HTMLImageElement>((resove,reject)=>{
         var img = new Image();
         img.onload = function(){
             resove(img);
