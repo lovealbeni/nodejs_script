@@ -2,26 +2,13 @@ import shader from './vshader';
 import Matrix from './cuon-matrix';
 import vshaderSource from './vshader.glsl';
 import fshaderSource from './fshader.glsl';
-// import * as vshaderSource from './vshader.glsl';
+import { initWebgl } from '../demo/util';
 function main(){
     var canvas = document.createElement('canvas');
     canvas.width = document.body.clientWidth;
     canvas.height = canvas.width * 0.6;
-    var gl = canvas.getContext('webgl');
 
-    var vertexShader = gl.createShader(gl.VERTEX_SHADER);
-    gl.shaderSource(vertexShader,vshaderSource);
-    gl.compileShader(vertexShader);
-    var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
-    gl.shaderSource(fragmentShader,fshaderSource);
-    gl.compileShader(fragmentShader);
-
-    var program = gl.createProgram();
-    gl.attachShader(program,vertexShader);
-    gl.attachShader(program,fragmentShader);
-
-    gl.linkProgram(program);
-    gl.useProgram(program);
+    var {gl,program} = initWebgl(canvas,vshaderSource,fshaderSource)
 
 
 
