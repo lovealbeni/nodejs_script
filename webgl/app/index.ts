@@ -4,6 +4,7 @@ import vshaderSource from './vshader.glsl';
 import fshaderSource from './fshader.glsl';
 import { initWebgl,attach } from '../demo/util';
 import { drawTextureMain } from '../demo/texture';
+import { drawCircleMain } from '../demo/circle';
 function main(){
     var canvas = document.createElement('canvas');
     canvas.width = document.body.clientWidth;
@@ -13,11 +14,17 @@ function main(){
     gl.clearColor(0.0,0.0,0.0,1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
 
-    drawTextureMain({
+    // drawTextureMain({
+    //     gl:gl,
+    //     program:program,
+    //     canvas:canvas
+    // });
+    drawCircleMain({
         gl:gl,
         program:program,
         canvas:canvas
     });
+
 
 
 

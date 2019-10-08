@@ -27,7 +27,25 @@ function drawCircleMain(rederObj:drawInterface){
     gl.bindBuffer(gl.ARRAY_BUFFER,buffer);
     gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(positions),gl.STATIC_DRAW);
     gl.enableVertexAttribArray(a_Position);
-    var size;
+    var size = 2;
+    var type = gl.FLOAT;
+    var normalize = false;
+    var stride = 6*4;
+    var offset = 0;
+    gl.vertexAttribPointer(a_Position,size,type,normalize,stride,offset);
+
+    var a_Screen_size = gl.getAttribLocation(program,'a_Screen_size');
+    gl.vertexAttrib2f(a_Screen_size,canvas.width,canvas.height);
+
+    var a_Color = gl.getAttribLocation(program,'a_Color');
+    var colorSize = 4;
+    var colorOffset = 2*4;
+    gl.enableVertexAttribArray(a_Color);
+    gl.vertexAttribPointer(a_Color,colorSize,type,normalize,stride,colorOffset);
+    var primitiveType = gl.TRIANGLE_FAN;
+    var offset = 0;
+    var count = positions.length/6;
+    gl.drawArrays(primitiveType,offset,count);
 }
 
 
