@@ -18,4 +18,19 @@ function initWebgl(canvas:HTMLCanvasElement,vshaderSource,fshaderSource){
     }
 }
 
-export {initWebgl}
+function attach(dom:HTMLElement){
+    var body = document.querySelector('body');
+    body.appendChild(dom);
+}
+
+interface drawInterface{
+    gl:WebGLRenderingContext,
+    program:WebGLProgram,
+    canvas:HTMLCanvasElement
+}
+
+export {
+    initWebgl,
+    attach,
+    drawInterface
+}
