@@ -1,4 +1,19 @@
-import { drawInterface } from './util'
+import { drawInterface,initWebgl,attach } from './util'
+import fshaderSource from '../app/sl/textureFshader.glsl';
+import vshaderSource from '../app/sl/textureVshader.glsl';
+
+function textureMain(canvas:HTMLCanvasElement){
+    var { gl,program } = initWebgl(canvas,vshaderSource,fshaderSource);
+    gl.clearColor(0.0,0.0,0.0,1.0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    drawTextureMain({
+        gl:gl,
+        program:program,
+        canvas:canvas
+    });
+    attach(canvas);
+}
+
 function prepareTextureImg(url:String){
     // 准备纹理贴图的
     return new Promise<HTMLImageElement>((resove,reject)=>{
@@ -68,5 +83,5 @@ function drawTextureMain(rederObj:drawInterface){
 }
 
 export { 
-    drawTextureMain
+    textureMain
  }
