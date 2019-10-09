@@ -1,4 +1,6 @@
-import { drawInterface } from './util';
+import { drawInterface,initWebgl,attach } from './util';
+import fshaderSource from '../app/sl/circleFshader.glsl';
+import vshaderSource from '../app/sl/circleVshader.glsl';
 
 function prepareCirclePointsAndcolors({x,y,r,n}){
     // x,y 圆心坐标
@@ -12,6 +14,18 @@ function prepareCirclePointsAndcolors({x,y,r,n}){
         pointsAndColors.push(x+r*cos(i*(pi/n)),y+r*sin(i*(pi/n)),255,0,0,1);
     }
     return pointsAndColors;
+}
+
+function circleMain(canvas:HTMLCanvasElement){
+    var { gl,program } = initWebgl(canvas,vshaderSource,fshaderSource);
+    gl.clearColor(0.0,0.0,0.0,1.0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    drawCircleMain({
+        gl:gl,
+        program:program,
+        canvas:canvas
+    });
+    attach(canvas);
 }
 
 function drawCircleMain(rederObj:drawInterface){
@@ -50,5 +64,5 @@ function drawCircleMain(rederObj:drawInterface){
 
 
 export {
-    drawCircleMain
+    circleMain
 }

@@ -1,29 +1,18 @@
-import shader from './vshader';
 import Matrix from './cuon-matrix';
-import vshaderSource from './vshader.glsl';
-import fshaderSource from './fshader.glsl';
-import { initWebgl,attach } from '../demo/util';
 import { drawTextureMain } from '../demo/texture';
-import { drawCircleMain } from '../demo/circle';
+import { circleMain } from '../demo/circle';
 function main(){
     var canvas = document.createElement('canvas');
     canvas.width = document.body.clientWidth;
     canvas.height = canvas.width * 0.6;
 
-    var {gl,program} = initWebgl(canvas,vshaderSource,fshaderSource)
-    gl.clearColor(0.0,0.0,0.0,1.0);
-    gl.clear(gl.COLOR_BUFFER_BIT);
 
     // drawTextureMain({
     //     gl:gl,
     //     program:program,
     //     canvas:canvas
     // });
-    drawCircleMain({
-        gl:gl,
-        program:program,
-        canvas:canvas
-    });
+    circleMain(canvas);
 
 
 
@@ -107,7 +96,6 @@ function main(){
 
     // drawAnotherCircle(gl);
 
-    attach(canvas);
 }
 function drawAnotherCircle(gl:WebGLRenderingContext){
     // 这个方法是用来画另外一个圆用的，形成的和上面画圆的代码一样的圆，画出了另外一个
