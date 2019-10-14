@@ -1,4 +1,5 @@
 import { drawInterface,initWebgl,attach } from './util';
+import { identity,multiply,rotateX,rotateY,ortho } from './matrix';
 import fshaderSource from '../app/sl/cubeFshader.glsl';
 import vshaderSource from '../app/sl/cubeVshader.glsl';
 
@@ -16,7 +17,7 @@ function cubeMain(canvas:HTMLCanvasElement){
 
 
 function drawCubeMain(rederObj:drawInterface){
-    let {gl,program} = rederObj;
+    let {gl,program,canvas} = rederObj;
     let { colors,indices,positions } = createCube(1,1,1);
     console.log({colors,indices,positions});
     var a_Position = gl.getAttribLocation(program,'a_Position');
@@ -47,7 +48,39 @@ function drawCubeMain(rederObj:drawInterface){
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,indicesBuffer);
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,indices,gl.STATIC_DRAW);
 
+    var u_Matrix = gl.getUniformLocation(program,'u_Matrix');
+
+
+    gl.enable(gl.CULL_FACE);
+
     gl.drawElements(gl.TRIANGLES,indices.length,gl.UNSIGNED_SHORT,0);
+    setTimeout(()=>{
+        let curMatrix = identity();
+        animate(gl,1,1,u_Matrix,curMatrix,indices.length,canvas,true);
+    },200);
+}
+
+function deg2radians(angle){
+    return (angle * Math.PI)/180;
+}
+
+function animate(gl:WebGLRenderingContext,xAngle:number,yAngle:number,u_Matrix,curMatrix,length,canvas:HTMLCanvasElement,isFirst:boolean){
+    gl.uniformMatrix4fv(u_Matrix,false,curMatrix);
+    curMatrix = rotateX(curMatrix,deg2radians(xAngle));
+    curMatrix = rotateY(curMatrix,deg2radians(yAngle));
+    if(isFirst){
+        let aspect = canvas.width/canvas.height;
+        var projectionMatrix = ortho(-aspect*4,aspect*4,-4,4,100,-100);
+        curMatrix = multiply(projectionMatrix,curMatrix);
+    }
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.drawElements(gl.TRIANGLES,length,gl.UNSIGNED_SHORT,0);
+    requestAnimationFrame(function(){
+        animate(gl,xAngle,yAngle,u_Matrix,curMatrix,length,canvas,false);
+    });
+    // setTimeout(() => {
+    //     animate(gl,xAngle,yAngle,u_Matrix,curMatrix,length,canvas,false);
+    // }, 1000);
 }
 
 function createCube(width:number,height:number,depth:number){
