@@ -1,17 +1,10 @@
-class Cube{
-    x:number;
-    y:number;
-    z:number;
+import { Geo } from './geoClass'
+class Cube extends Geo{
     static width:number = 1;
     static height:number = 1;
     static depth:number = 1;
-    positions:Float32Array;
-    indices:Uint16Array;
-    colors:Float32Array;
     constructor(x:number,y:number,z:number){
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        super(x,y,z);
         let {positions,colors,indices} = this.createCube(this.x,this.y,this.z);
         this.positions = positions;
         this.colors = colors;
