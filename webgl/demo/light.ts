@@ -58,7 +58,7 @@ function drawLightMain(rederObj:drawInterface){
     gl.enable(gl.CULL_FACE);
 
     let u_LightColor = gl.getUniformLocation(program,'u_LightColor');
-    gl.uniform3f(u_LightColor,1, 1, 1);
+    gl.uniform3f(u_LightColor,0.5, 0.5, 0.5);
     
     let u_AmbientFactor = gl.getUniformLocation(program,'u_AmbientFactor');
     gl.uniform1f(u_AmbientFactor,1);
