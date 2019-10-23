@@ -584,7 +584,7 @@ function perspectiveOfRect(left, right, top, bottom, near, far, target) {
  * @param {*} target
  * @returns
  */
-function inverse(m, target) {
+function inverse(m, target?) {
     var n11 = m[0],
         n21 = m[1],
         n31 = m[2],

@@ -56,7 +56,7 @@ class Cube extends Geo {
         let normals = [];
         for (let f = 0; f < 6; ++f) {
             let faceIndices = CUBE_FACE_INDICES[f]; //每一个面的索引
-            let color = FACE_COLORS[f];
+            let color = FACE_COLORS[0];
             let normal = normalInput[f];
             for (let v = 0; v < 4; ++v) {
                 let position = cornerPosition[faceIndices[v]];

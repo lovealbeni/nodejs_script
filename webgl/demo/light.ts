@@ -1,5 +1,5 @@
 import { drawInterface,initWebgl,attach,BufferBind,LocationFuncType } from './util';
-import { identity,multiply,rotateX,rotateY,ortho } from './matrix';
+import { identity,multiply,rotateX,rotateY,ortho,inverse } from './matrix';
 import fshaderSource from '../app/sl/lightFshader.glsl';
 import vshaderSource from '../app/sl/lightVshader.glsl';
 import { Geo } from './geo/geoClass';
@@ -74,10 +74,11 @@ function drawLightMain(rederObj:drawInterface){
     gl.uniform3f(u_LightColor,1, 1, 1);
     
     let u_AmbientFactor = gl.getUniformLocation(program,'u_AmbientFactor');
-    gl.uniform1f(u_AmbientFactor,0.2);
+    gl.uniform1f(u_AmbientFactor,0);
 
     let u_LightPosition = gl.getUniformLocation(program,'u_LightPosition');
-    gl.uniform3f(u_LightPosition,0,0,10);
+
+    gl.uniform3f(u_LightPosition,0,0,0.7);
 
     let u_ModuleMatrix = gl.getUniformLocation(program,'u_ModuleMatrix');
 
