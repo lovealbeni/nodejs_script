@@ -5,6 +5,7 @@ class Geo{
     positions:Float32Array;
     indices:Uint16Array;
     colors:Float32Array;
+    normals:Float32Array;
     constructor(x:number,y:number,z:number){
         this.x = x;
         this.y = y;
@@ -18,6 +19,9 @@ class Geo{
     }
     getColors():Float32Array{
         return this.colors;
+    }
+    getNormals():Float32Array{
+        return this.normals;
     }
 }
 
