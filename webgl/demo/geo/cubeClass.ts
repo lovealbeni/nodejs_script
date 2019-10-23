@@ -5,19 +5,11 @@ class Cube extends Geo {
     static depth: number = 1;
     constructor(x: number, y: number, z: number) {
         super(x, y, z);
-        let { positions, colors, indices } = this.createCube(this.x, this.y, this.z);
+        let { positions, colors, indices, normals } = this.createCube(this.x, this.y, this.z);
         this.positions = positions;
         this.colors = colors;
         this.indices = indices;
-    }
-    getPositions(): Float32Array {
-        return this.positions;
-    }
-    getIndices(): Uint16Array {
-        return this.indices;
-    }
-    getColors(): Float32Array {
-        return this.colors;
+        this.normals = normals;
     }
     createCube(x: number, y: number, z: number) {
         let zeroX = Cube.width / 2, zeroY = Cube.height / 2, zeroZ = Cube.depth / 2;
@@ -58,13 +50,16 @@ class Cube extends Geo {
         let colors = [];
         let positions = [];
         let indices = [];
+        let normal = [];
         for (let f = 0; f < 6; ++f) {
             let faceIndices = CUBE_FACE_INDICES[f]; //每一个面的索引
             let color = FACE_COLORS[f];
+            let normal = normalInput[f];
             for (let v = 0; v < 4; ++v) {
                 let position = cornerPosition[faceIndices[v]];
                 positions = positions.concat(position);
                 colors = colors.concat(color);
+                normal = normal.concat(normal);
             }
             let offset = 4 * f;
             indices.push(offset + 0, offset + 1, offset + 2);
@@ -73,11 +68,13 @@ class Cube extends Geo {
         let fcolors = new Float32Array(colors);
         let fpositions = new Float32Array(positions);
         let findices = new Uint16Array(indices);
+        let normals = new Float32Array(normal);
 
         return {
             positions: fpositions,
             colors: fcolors,
-            indices: findices
+            indices: findices,
+            normals: normals
         }
     }
 }
