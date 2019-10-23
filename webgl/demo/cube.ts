@@ -4,6 +4,7 @@ import fshaderSource from '../app/sl/cubeFshader.glsl';
 import vshaderSource from '../app/sl/cubeVshader.glsl';
 import { Cube as cubeClass } from './geo/cubeClass';
 import { Sphere as sphereClass } from './geo/sphereClass';
+import { Geo } from './geo/geoClass';
 
 function cubeMain(canvas:HTMLCanvasElement){
     var { gl,program } = initWebgl(canvas,vshaderSource,fshaderSource);
@@ -19,7 +20,7 @@ function cubeMain(canvas:HTMLCanvasElement){
 
 function drawCubeMultiMain(rederObj:drawInterface){
     let {gl,program,canvas} = rederObj;
-    let cubes:cubeClass[] = [];
+    let cubes:Geo[] = [];
     cubes.push(new cubeClass(0,0,0));
     cubes.push(new cubeClass(0,2,0));
     cubes.push(new sphereClass(1,1,0,10,10,1));

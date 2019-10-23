@@ -44,6 +44,17 @@ function drawLightMain(rederObj:drawInterface){
         stride:4*4,
         offset:0
     });
+    var normalBufer = BufferBind({
+        gl:gl,
+        program:program,
+        locationFuncionType:LocationFuncType.attr,
+        varName: 'a_Normal',
+        size:3,
+        type:gl.FLOAT,
+        normalize:false,
+        stride:3*4,
+        offset:0
+    });
 
 
     var indicesBuffer = gl.createBuffer();
@@ -55,29 +66,43 @@ function drawLightMain(rederObj:drawInterface){
     var curMatrix = identity();
     curMatrix = multiply(projectionMatrix,curMatrix);
 
+    let moduleMatrix = identity();
+
     gl.enable(gl.CULL_FACE);
 
     let u_LightColor = gl.getUniformLocation(program,'u_LightColor');
-    gl.uniform3f(u_LightColor,0.5, 0.5, 0.5);
+    gl.uniform3f(u_LightColor,1, 1, 1);
     
     let u_AmbientFactor = gl.getUniformLocation(program,'u_AmbientFactor');
-    gl.uniform1f(u_AmbientFactor,1);
+    gl.uniform1f(u_AmbientFactor,0.2);
+
+    let u_LightPosition = gl.getUniformLocation(program,'u_LightPosition');
+    gl.uniform3f(u_LightPosition,0,0,10);
+
+    let u_ModuleMatrix = gl.getUniformLocation(program,'u_ModuleMatrix');
 
     function drawRotateCube(){
-        var xAngle = Math.random();
-        var yAngle = Math.random();
+        var xAngle = 1;
+        // var yAngle = Math.random();
         curMatrix = rotateX(curMatrix,deg2radians(xAngle));
-        curMatrix = rotateY(curMatrix,deg2radians(yAngle));
-        
+        // curMatrix = rotateY(curMatrix,deg2radians(yAngle));
+        moduleMatrix = rotateX(moduleMatrix,deg2radians(xAngle));
         gl.uniformMatrix4fv(u_Matrix,false,curMatrix);
+        gl.uniformMatrix4fv(u_ModuleMatrix,false,moduleMatrix);
         gl.clear(gl.COLOR_BUFFER_BIT);
         for(let i = 0;i<cubes.length;i++){
             let nowCube = cubes[i];
             gl.bindBuffer(gl.ARRAY_BUFFER,positionBuffer);
             gl.bufferData(gl.ARRAY_BUFFER,nowCube.getPositions(),gl.STATIC_DRAW);
+
             gl.bindBuffer(gl.ARRAY_BUFFER,colorBuffer);
             gl.bufferData(gl.ARRAY_BUFFER,nowCube.getColors(),gl.STATIC_DRAW);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER,normalBufer);
+            gl.bufferData(gl.ARRAY_BUFFER,nowCube.getNormals(),gl.STATIC_DRAW);
+
             gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,nowCube.getIndices(),gl.STATIC_DRAW);
+
             gl.drawElements(gl.TRIANGLES,nowCube.getIndices().length,gl.UNSIGNED_SHORT,0);
         }
         requestAnimationFrame(drawRotateCube);

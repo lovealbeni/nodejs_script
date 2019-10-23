@@ -50,7 +50,7 @@ class Cube extends Geo {
         let colors = [];
         let positions = [];
         let indices = [];
-        let normal = [];
+        let normals = [];
         for (let f = 0; f < 6; ++f) {
             let faceIndices = CUBE_FACE_INDICES[f]; //每一个面的索引
             let color = FACE_COLORS[f];
@@ -59,7 +59,7 @@ class Cube extends Geo {
                 let position = cornerPosition[faceIndices[v]];
                 positions = positions.concat(position);
                 colors = colors.concat(color);
-                normal = normal.concat(normal);
+                normals = normals.concat(normal);
             }
             let offset = 4 * f;
             indices.push(offset + 0, offset + 1, offset + 2);
@@ -68,13 +68,13 @@ class Cube extends Geo {
         let fcolors = new Float32Array(colors);
         let fpositions = new Float32Array(positions);
         let findices = new Uint16Array(indices);
-        let normals = new Float32Array(normal);
+        let fnormals = new Float32Array(normals);
 
         return {
             positions: fpositions,
             colors: fcolors,
             indices: findices,
-            normals: normals
+            normals: fnormals
         }
     }
 }
