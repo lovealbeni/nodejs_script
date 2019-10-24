@@ -74,11 +74,10 @@ function drawLightMain(rederObj:drawInterface){
     gl.uniform3f(u_LightColor,1, 1, 1);
     
     let u_AmbientFactor = gl.getUniformLocation(program,'u_AmbientFactor');
-    gl.uniform1f(u_AmbientFactor,0);
+    gl.uniform1f(u_AmbientFactor,0.2);
 
     let u_LightPosition = gl.getUniformLocation(program,'u_LightPosition');
-
-    gl.uniform3f(u_LightPosition,0,0,0.7);
+    gl.uniform3f(u_LightPosition,0,0,0.1);
 
     let u_ModuleMatrix = gl.getUniformLocation(program,'u_ModuleMatrix');
 
@@ -87,7 +86,7 @@ function drawLightMain(rederObj:drawInterface){
         // var yAngle = Math.random();
         curMatrix = rotateX(curMatrix,deg2radians(xAngle));
         // curMatrix = rotateY(curMatrix,deg2radians(yAngle));
-        moduleMatrix = rotateX(moduleMatrix,deg2radians(xAngle));
+        moduleMatrix = inverse(curMatrix);
         gl.uniformMatrix4fv(u_Matrix,false,curMatrix);
         gl.uniformMatrix4fv(u_ModuleMatrix,false,moduleMatrix);
         gl.clear(gl.COLOR_BUFFER_BIT);

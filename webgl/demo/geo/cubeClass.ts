@@ -45,10 +45,10 @@ class Cube extends Geo {
         const normalInput = [
             [0, 0, 1],
             [0, 0, -1],
-            [1, 0, 0],
             [-1, 0, 0],
-            [0, -1, 0],
-            [0, 1, 0]
+            [1, 0, 0],
+            [0, 1, 0],
+            [0, -1, 0]
         ];
         let colors = [];
         let positions = [];

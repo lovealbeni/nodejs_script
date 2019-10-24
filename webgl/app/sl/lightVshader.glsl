@@ -11,5 +11,5 @@ void main(){
     gl_Position = u_Matrix * vec4(a_Position,1);
     v_Color = a_Color;
     v_Normal = mat3(u_ModuleMatrix) * a_Normal;
-    v_Position = mat3(u_ModuleMatrix) * a_Position;
+    v_Position = gl_Position.xyz;
 }
