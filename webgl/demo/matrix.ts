@@ -438,8 +438,7 @@ function rotateZ(m, angle, target) {
  * @param {*} target
  * @returns
  */
-function axisRotation(axis, angle, target) {
-    target = target || new Float32Array(16);
+function axisRotation(axis, angle, target = new Float32Array(16)) {
 
     var x = axis.x;
     var y = axis.y;
@@ -495,8 +494,7 @@ function axisRotation(axis, angle, target) {
  * @param {*} target
  * @returns
  */
-function lookAt(cameraPosition: Vector3, lookTarget: Vector3, upDirection: Vector3, target) {
-    var target = target || new Float32Array(16);
+function lookAt(cameraPosition: Vector3, lookTarget: Vector3, upDirection: Vector3, target = new Float32Array(16)) {
     let zAxis = Vector3.sub(cameraPosition, lookTarget)
     zAxis = zAxis.normalize();
     // 如果摄像机位置和目标位置处于同一点
