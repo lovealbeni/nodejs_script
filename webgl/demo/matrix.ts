@@ -1,11 +1,10 @@
-import { Vector3 } from './vector';
+import { Vector3 } from './maths/vector';
 /**
-     *单位矩阵
-     *
-     * @param {*} target
-     */
-function identity(target?) {
-    target = target || new Float32Array(16);
+ *单位矩阵
+ *
+ * @param {*} target
+ */
+function identity(target: Float32Array = new Float32Array(16)) {
     for (var i = 0; i < 16; i++) {
         if (i % 5 == 0) {
             target[i] = 1;
@@ -15,6 +14,7 @@ function identity(target?) {
     }
     return target;
 }
+
 /**
  *初始化矩阵
  *
@@ -44,8 +44,83 @@ function initialize(source, target) {
  * @param {*} target
  * @returns
  */
-function multiply(next, prev, target?) {
-    target = target || new Float32Array(16);
+function multiply(next, prev, target = new Float32Array(16)) {
+    // 第一列
+    var p00 = prev[0];
+    var p10 = prev[1];
+    var p20 = prev[2];
+    var p30 = prev[3];
+    // 第二列
+    var p01 = prev[4];
+    var p11 = prev[5];
+    var p21 = prev[6];
+    var p31 = prev[7];
+    // 第三列
+    var p02 = prev[8];
+    var p12 = prev[9];
+    var p22 = prev[10];
+    var p32 = prev[11];
+
+    // 第四列
+    var p03 = prev[12];
+    var p13 = prev[13];
+    var p23 = prev[14];
+    var p33 = prev[15];
+
+    // 第一行
+    var n00 = next[0];
+    var n01 = next[4];
+    var n02 = next[8];
+    var n03 = next[12];
+    // 第二行
+    var n10 = next[1];
+    var n11 = next[5];
+    var n12 = next[9];
+    var n13 = next[13];
+    // 第三行
+    var n20 = next[2];
+    var n21 = next[6];
+    var n22 = next[10];
+    var n23 = next[14];
+
+    // 第四行
+    var n30 = next[3];
+    var n31 = next[7];
+    var n32 = next[11];
+    var n33 = next[15];
+
+    target[0] = p00 * n00 + p10 * n01 + p20 * n02 + p30 * n03;
+    target[1] = p00 * n10 + p10 * n11 + p20 * n12 + p30 * n13;
+    target[2] = p00 * n20 + p10 * n21 + p20 * n22 + p30 * n23;
+    target[3] = p00 * n30 + p10 * n31 + p20 * n32 + p30 * n33;
+
+    target[4] = p01 * n00 + p11 * n01 + p21 * n02 + p31 * n03;
+    target[5] = p01 * n10 + p11 * n11 + p21 * n12 + p31 * n13;
+    target[6] = p01 * n20 + p11 * n21 + p21 * n22 + p31 * n23;
+    target[7] = p01 * n30 + p11 * n31 + p21 * n32 + p31 * n33;
+
+    target[8] = p02 * n00 + p12 * n01 + p22 * n02 + p32 * n03;
+    target[9] = p02 * n10 + p12 * n11 + p22 * n12 + p32 * n13;
+    target[10] = p02 * n20 + p12 * n21 + p22 * n22 + p32 * n23;
+    target[11] = p02 * n30 + p12 * n31 + p22 * n32 + p32 * n33;
+
+    target[12] = p03 * n00 + p13 * n01 + p23 * n02 + p33 * n03;
+    target[13] = p03 * n10 + p13 * n11 + p23 * n12 + p33 * n13;
+    target[14] = p03 * n20 + p13 * n21 + p23 * n22 + p33 * n23;
+    target[15] = p03 * n30 + p13 * n31 + p23 * n32 + p33 * n33;
+
+    return target;
+}
+/**
+ *矩阵相乘  next * prev;
+ *
+ * @param {*} next
+ * @param {*} prev
+ * @param {*} target
+ * @returns
+ */
+function multiplyScalar(prev, next, target = new Float32Array(16)) {
+
     // 第一列
     var p00 = prev[0];
     var p10 = prev[1];
@@ -282,43 +357,7 @@ function rotationZ(angle, target) {
     return target;
 }
 
-// function rotateX(m, angle, target) {
-//     target = traget || new Float32Array(16);
-
-//     var m10 = m[4];
-//     var m11 = m[5];
-//     var m12 = m[6];
-//     var m13 = m[7];
-//     var m20 = m[8];
-//     var m21 = m[9];
-//     var m22 = m[10];
-//     var m23 = m[11];
-//     var cos = Math.cos(angle);
-//     var sin = Math.sin(angle);
-
-//     target[4] = cos * m10 + sin * m20;
-//     target[5] = cos * m11 + sin * m21;
-//     target[6] = cos * m12 + sin * m22;
-//     target[7] = cos * m13 + sin * m23;
-//     target[8] = cos * m20 - sin * m10;
-//     target[9] = cos * m21 - sin * m11;
-//     target[10] = cos * m22 - sin * m12;
-//     target[11] = cos * m23 - sin * m13;
-
-//     if (m !== target) {
-//         target[0] = m[0];
-//         target[1] = m[1];
-//         target[2] = m[2];
-//         target[3] = m[3];
-//         target[12] = m[12];
-//         target[13] = m[13];
-//         target[14] = m[14];
-//         target[15] = m[15];
-//     }
-
-//     return target;
-// }
-function rotateY(m, angle, target?) {
+function rotateY(m, angle, target) {
     target = target || new Float32Array(16);
 
     var m00 = m[0];
@@ -447,61 +486,61 @@ function axisRotation(axis, angle, target) {
 
     return target;
 }
-// /**
-//  *视图矩阵
-//  *
-//  * @param {*} cameraPosition，摄像机坐标
-//  * @param {*} target，观察点坐标
-//  * @param {*} upDirection，初始Y轴基向量
-//  * @param {*} target
-//  * @returns
-//  */
-// function lookAt(cameraPosition, lookTarget, upDirection, target) {
-//     var target = target || new Float32Array(16);
-//     let zAxis = Vector3.normalize(
-//         Vector3.subtractVectors(cameraPosition, lookTarget)
-//     );
-//     // 如果摄像机位置和目标位置处于同一点
-//     if (zAxis.lengthSquare() === 0) {
-//         zAxis.z = 1;
-//     }
+/**
+ *视图矩阵
+ *
+ * @param {*} cameraPosition，摄像机坐标
+ * @param {*} target，观察点坐标
+ * @param {*} upDirection，初始Y轴基向量
+ * @param {*} target
+ * @returns
+ */
+function lookAt(cameraPosition: Vector3, lookTarget: Vector3, upDirection: Vector3, target) {
+    var target = target || new Float32Array(16);
+    let zAxis = Vector3.sub(cameraPosition, lookTarget)
+    zAxis = zAxis.normalize();
+    // 如果摄像机位置和目标位置处于同一点
+    if (zAxis.lengthSquare() === 0) {
+        zAxis.z = 1;
+    }
 
-//     let xAxis = Vector3.normalize(Vector3.cross(upDirection, zAxis));
-//     if (xAxis.length() == 0) {
-//         if (Math.abs(upDirection.z == 1)) {
-//             zAxis.x += 0.0001;
-//         } else {
-//             zAxis.z += 0.0001;
-//         }
-//         zAxis.normalize();
-//         xAxis = Vector3.cross(upDirection, zAxis);
-//         xAxis.normalize();
-//     }
-//     let yAxis = Vector3.normalize(Vector3.cross(zAxis, xAxis));
+    let xAxis = (Vector3.cross(upDirection, zAxis)).normalize();
+    if (xAxis.length() == 0) {
 
-//     //第一列
-//     target[0] = xAxis.x;
-//     target[1] = xAxis.y;
-//     target[2] = xAxis.z;
-//     target[3] = 0;
-//     //第二列
-//     target[4] = yAxis.x;
-//     target[5] = yAxis.y;
-//     target[6] = yAxis.z;
-//     target[7] = 0;
-//     //第三列
-//     target[8] = zAxis.x;
-//     target[9] = zAxis.y;
-//     target[10] = zAxis.z;
-//     target[11] = 0;
-//     //第四列
-//     target[12] = cameraPosition.x;
-//     target[13] = cameraPosition.y;
-//     target[14] = cameraPosition.z;
-//     target[15] = 1;
+        if (Math.abs(upDirection.z) == 1) {
+            zAxis.x += 0.0001;
+        } else {
+            zAxis.z += 0.0001;
+        }
+        zAxis.normalize();
+        xAxis = Vector3.cross(upDirection, zAxis);
+        xAxis.normalize();
+    }
+    let yAxis = (Vector3.cross(zAxis, xAxis)).normalize();
 
-//     return target;
-// }
+    //第一列
+    target[0] = xAxis.x;
+    target[1] = xAxis.y;
+    target[2] = xAxis.z;
+    target[3] = 0;
+    //第二列
+    target[4] = yAxis.x;
+    target[5] = yAxis.y;
+    target[6] = yAxis.z;
+    target[7] = 0;
+    //第三列
+    target[8] = zAxis.x;
+    target[9] = zAxis.y;
+    target[10] = zAxis.z;
+    target[11] = 0;
+    //第四列
+    target[12] = cameraPosition.x;
+    target[13] = cameraPosition.y;
+    target[14] = cameraPosition.z;
+    target[15] = 1;
+
+    return target;
+}
 
 /**
  *根据视角求透视投影矩阵
@@ -584,7 +623,7 @@ function perspectiveOfRect(left, right, top, bottom, near, far, target) {
  * @param {*} target
  * @returns
  */
-function inverse(m, target?) {
+function inverse(m, target) {
     var n11 = m[0],
         n21 = m[1],
         n31 = m[2],
@@ -759,7 +798,7 @@ function inverse(m, target?) {
  * @param {*} target
  * @returns
  */
-function ortho(left, right, bottom, top, near, far, target?) {
+function ortho(left, right, bottom, top, near, far, target) {
     target = target || new Float32Array(16);
 
     target[0] = 2 / (right - left);
@@ -928,47 +967,46 @@ function makeRotationFromEuler(euler, target) {
 
     return target;
 }
-// function makeRotationFromQuaternion(q, target) {
-//     target = target || new Float32Array(16);
-//     var x = quaternion.x,
-//         y = quaternion.y,
-//         z = quaternion.z,
-//         w = quaternion.w;
-//     var x2 = 2 * x,
-//         y2 = 2 * y,
-//         z2 = 2 * z;
-//     var xx = x * x2,
-//         xy = x * y2,
-//         xz = x * z2;
-//     var yy = y * y2,
-//         yz = y * z2,
-//         zz = z * z2;
-//     var wx = w * x2,
-//         wy = w * y2,
-//         wz = w * z2;
+function makeRotationFromQuaternion(quaternion, target = new Float32Array(16)) {
+    var x = quaternion.x,
+        y = quaternion.y,
+        z = quaternion.z,
+        w = quaternion.w;
+    var x2 = 2 * x,
+        y2 = 2 * y,
+        z2 = 2 * z;
+    var xx = x * x2,
+        xy = x * y2,
+        xz = x * z2;
+    var yy = y * y2,
+        yz = y * z2,
+        zz = z * z2;
+    var wx = w * x2,
+        wy = w * y2,
+        wz = w * z2;
 
-//     target[0] = 1 - (yy + zz);
-//     target[1] = xy + wz;
-//     target[2] = xz - wy;
-//     target[3] = 0;
+    target[0] = 1 - (yy + zz);
+    target[1] = xy + wz;
+    target[2] = xz - wy;
+    target[3] = 0;
 
-//     target[4] = xy - wz;
-//     target[5] = 1 - (xx + zz);
-//     target[6] = yz + wx;
-//     target[7] = 0;
+    target[4] = xy - wz;
+    target[5] = 1 - (xx + zz);
+    target[6] = yz + wx;
+    target[7] = 0;
 
-//     target[8] = xz + wy;
-//     target[9] = yz - wx;
-//     target[10] = 1 - (xx + yy);
-//     target[11] = 0;
+    target[8] = xz + wy;
+    target[9] = yz - wx;
+    target[10] = 1 - (xx + yy);
+    target[11] = 0;
 
-//     target[12] = 0;
-//     target[13] = 0;
-//     target[14] = 0;
-//     target[15] = 1;
+    target[12] = 0;
+    target[13] = 0;
+    target[14] = 0;
+    target[15] = 1;
 
-//     return target;
-// }
+    return target;
+}
 function transpose(m, target) {
     target = target || new Float32Array(16);
     //转置矩阵的第一列
@@ -1047,7 +1085,7 @@ function scalation(sx, sy, sz, target) {
     target[15] = 1;
     return target;
 }
-function rotateX(m, angleInRadians, target?) {
+function rotateX(m, angleInRadians, target) {
     // this is the optimized version of
     // return multiply(m, xRotation(angleInRadians), dst);
     target = target || new Float32Array(16);
@@ -1091,7 +1129,12 @@ function applyMatrix(v, m) {
         y = v.y,
         z = v.z,
         w = v.w;
-    let that = {x,y,z,w};
+    let that = {
+        x:0,
+        y:0,
+        z:0,
+        w:0
+    };
     that.x = m[0] * x + m[4] * y + m[8] * z + m[12] * w;
     that.y = m[1] * x + m[5] * y + m[9] * z + m[13] * w;
     that.z = m[2] * x + m[6] * y + m[10] * z + m[14] * w;
@@ -1147,6 +1190,7 @@ function getMatrixFromEuler(euler, dst) {
 export {
     multiply,
     inverse,
+    lookAt,
     perspective,
     perspectiveOfRect,
     identity,
@@ -1169,4 +1213,5 @@ export {
     applyMatrix,
     transpose,
     makeRotationFromEuler,
+    makeRotationFromQuaternion
 };
