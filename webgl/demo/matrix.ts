@@ -623,7 +623,7 @@ function perspectiveOfRect(left, right, top, bottom, near, far, target) {
  * @param {*} target
  * @returns
  */
-function inverse(m, target) {
+function inverse(m, target = new Float32Array(16)) {
     var n11 = m[0],
         n21 = m[1],
         n31 = m[2],
@@ -676,7 +676,6 @@ function inverse(m, target) {
         console.warn(msg);
         return identity();
     }
-    target = target || new Float32Array(16);
     var detInv = 1 / determinant;
 
     target[0] = t11 * detInv;
@@ -798,8 +797,7 @@ function inverse(m, target) {
  * @param {*} target
  * @returns
  */
-function ortho(left, right, bottom, top, near, far, target) {
-    target = target || new Float32Array(16);
+function ortho(left, right, bottom, top, near, far, target = new Float32Array(16)) {
 
     target[0] = 2 / (right - left);
     target[1] = 0;
@@ -1085,11 +1083,9 @@ function scalation(sx, sy, sz, target) {
     target[15] = 1;
     return target;
 }
-function rotateX(m, angleInRadians, target) {
+function rotateX(m, angleInRadians, target = new Float32Array(16)) {
     // this is the optimized version of
     // return multiply(m, xRotation(angleInRadians), dst);
-    target = target || new Float32Array(16);
-
     var m10 = m[4];
     var m11 = m[5];
     var m12 = m[6];
@@ -1130,10 +1126,10 @@ function applyMatrix(v, m) {
         z = v.z,
         w = v.w;
     let that = {
-        x:0,
-        y:0,
-        z:0,
-        w:0
+        x: 0,
+        y: 0,
+        z: 0,
+        w: 0
     };
     that.x = m[0] * x + m[4] * y + m[8] * z + m[12] * w;
     that.y = m[1] * x + m[5] * y + m[9] * z + m[13] * w;
