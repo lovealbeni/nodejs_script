@@ -16,7 +16,7 @@ function main(){
 	var cube = new THREE.Mesh(cubeGeo,cubeMesh);
 	scene.add(cube);
 
-	camera.position.set(0,0,10);
+	camera.position.set(10,10,10);
 	// blue z green y red x
 	camera.lookAt(scene.position);
 	document.querySelector('#output').append(render.domElement);
