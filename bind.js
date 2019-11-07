@@ -1,0 +1,3 @@
+function mybind(context,fun){
+    
+}
