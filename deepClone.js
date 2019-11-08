@@ -1,21 +1,19 @@
-function clone(src, map = {}) {
-    let target = Array.isArray(src) ? [] : {};
-    for (let key in src) {
-        let source = src[key];
-        if (typeof source === 'object') {
-            if(!map[source]){
-                target[key] = clone(source, map);
-                map[source] = target[key];
-            } else {
-                target[key] = map[source];
-                return target;
-            }
-        } else {
-            target[key] = source;
+function clone(target, map = new Map()) {
+    if (typeof target === 'object') {
+        let cloneTarget = Array.isArray(target) ? [] : {};
+        if (map.get(target)) {
+            return map.get(target);
         }
+        map.set(target, cloneTarget);
+        for (const key in target) {
+            cloneTarget[key] = clone(target[key], map);
+        }
+        return cloneTarget;
+    } else {
+        return target;
     }
-    return target;
-}
+};
+
 
 var data = {
     c: [1, 2, 3],
@@ -29,5 +27,6 @@ var assign = {};
 
 assign = clone(data);
 
+console.log(assign);
 
 assign.c.push(4);
