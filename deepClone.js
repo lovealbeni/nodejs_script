@@ -3,7 +3,13 @@ function clone(src, map = {}) {
     for (let key in src) {
         let source = src[key];
         if (typeof source === 'object') {
-            target[key] = clone(source, map);
+            if(!map[source]){
+                target[key] = clone(source, map);
+                map[source] = target[key];
+            } else {
+                target[key] = map[source];
+                return target;
+            }
         } else {
             target[key] = source;
         }
@@ -13,17 +19,15 @@ function clone(src, map = {}) {
 
 var data = {
     c: [1, 2, 3],
-    u: undefined
+    u: undefined,
+    o:{},
+    m:{}
 }
-data.d = data;
-
+data.o.m = data.m;
+data.m.o = data.o;
 var assign = {};
 
 assign = clone(data);
 
-console.log('assign', assign);
 
 assign.c.push(4);
-
-console.dir(data);
-console.dir(assign.d.c);
