@@ -21,9 +21,9 @@ function cubeMain(canvas:HTMLCanvasElement){
 function drawCubeMultiMain(rederObj:drawInterface){
     let {gl,program,canvas} = rederObj;
     let cubes:Geo[] = [];
-    cubes.push(new cubeClass(0,0,0));
-    cubes.push(new cubeClass(0,2,0));
-    cubes.push(new sphereClass(1,1,0,10,10,1));
+    // cubes.push(new cubeClass(0,0,0));
+    // cubes.push(new cubeClass(0,2,0));
+    cubes.push(new sphereClass(1,1,0,100,100,1));
 
     var a_Position = gl.getAttribLocation(program,'a_Position');
     var positionBuffer = gl.createBuffer();
@@ -64,7 +64,7 @@ function drawCubeMultiMain(rederObj:drawInterface){
         var xAngle = Math.random();
         var yAngle = Math.random();
         curMatrix = rotateX(curMatrix,deg2radians(xAngle));
-        curMatrix = rotateY(curMatrix,deg2radians(yAngle));
+        // curMatrix = rotateY(curMatrix,deg2radians(yAngle));
         
         gl.uniformMatrix4fv(u_Matrix,false,curMatrix);
         gl.clear(gl.COLOR_BUFFER_BIT);

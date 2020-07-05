@@ -27,12 +27,12 @@ function prepareTextureImg(url:String){
 
 function prepareTexturePositions(){
     var positions = [
-        30,30,0,0,
-        30,300,0,1,
-        300,300,1,1,
-        30,30,0,0,
-        300,300,1,1,
-        300,30,1,0
+        0,0,0,0,
+        0,1039,0,1,
+        1039,1039,1,1,
+        0,0,0,0,
+        1039,1039,1,1,
+        1039,0,1,0
     ];
     return positions;
 }
