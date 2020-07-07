@@ -11,25 +11,43 @@ function shaderMain(canvas:HTMLCanvasElement){
         program:program,
         canvas:canvas
     })
+    canvas.style.backgroundColor = 'black'
     attach(canvas)
 }
 
 function drawShaderMain(renderObj:drawInterface){
     var { gl,program,canvas } = renderObj
-    var a_Position = gl.getAttribLocation(program,'a_Position')
-    var u_Screen = gl.getUniformLocation(program,'u_Screen')
-    var u_Time = gl.getUniformLocation(program,'u_Time')
-    gl.vertexAttrib1f(a_Position,0.0)
-    gl.uniform2f(u_Screen,canvas.width,canvas.height)
-    let time = 1.0
-    const drawLoop = () => {
-        gl.uniform1f(u_Time,time)
-        gl.drawArrays(gl.POINTS,0,1)
-        time += 0.01
-        time = time % 10
-        requestAnimationFrame(drawLoop)
+    var verticesTexCoords = new Float32Array([
+        -1.0, 1.0, 0.0, 1.0,
+        -1.0, -1.0, 0.0, 0.0,
+        1.0, 1.0, 1.0, 1.0,
+        1.0, -1.0, 1.0, 0.0,
+    ]);
+    var n = 4;
+    var vertexCoordBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertexCoordBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, verticesTexCoords, gl.STATIC_DRAW);
+    
+    var FSIZE = verticesTexCoords.BYTES_PER_ELEMENT;
+    
+    var a_Position = gl.getAttribLocation(program, 'a_Position');
+    gl.vertexAttribPointer(a_Position, 2, gl.FLOAT, false, FSIZE * 4, 0);
+    gl.enableVertexAttribArray(a_Position);
+    
+    var a_TexCoord = gl.getAttribLocation(program, 'a_TexCoord');
+    gl.vertexAttribPointer(a_TexCoord, 2, gl.FLOAT, false, FSIZE * 4, FSIZE * 2);
+    gl.enableVertexAttribArray(a_TexCoord)
+
+    var u_Time = gl.getUniformLocation(program,'time')
+    var newTime = 0.1
+    var draw = function(){
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        newTime += 0.05
+        gl.uniform1f(u_Time,newTime);
+        gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+        requestAnimationFrame(draw)
     }
-    requestAnimationFrame(drawLoop)
+    draw()
 }
 
 export {

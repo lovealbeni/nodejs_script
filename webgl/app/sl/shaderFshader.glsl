@@ -1,25 +1,59 @@
-precision highp float;
-uniform vec2 u_Screen;
-varying vec3 v_Position;
-uniform float u_Time;
-const float PI = 3.1415926;
+precision mediump float;
+uniform float time;
+varying vec2 v_TexCoord;
 
-void main () {
-    // 将坐标系坐标范围约束在【-4，4】和【-5，3】之间。
-    vec2 pos = ( gl_FragCoord.xy / u_Screen.xy )*8.-vec2(4., 5.);
-    if(pos.y>-5.){
-        pos.y += 0.1 * sin(u_Time * 3.) + 0.13 * cos(u_Time * 2. + 0.6) + .1 * sin(u_Time * 3. + 0.4) + 0.2 * fract(sin(u_Time * 400.));
+float noise(vec3 p){
+    vec3 i = floor(p);
+    vec4 a = dot(i, vec3(1., 57., 21.)) + vec4(0., 57., 21., 78.);
+    vec3 f = cos((p-i)*acos(-1.))*(-.5)+.5;
+    a = mix(sin(cos(a)*a),sin(cos(1.+a)*(1.+a)), f.x);
+    a.xy = mix(a.xz, a.yw, f.y);
+    return mix(a.x, a.y, f.z);
+}
+
+float sphere(vec3 p, vec4 spr){
+    return length(spr.xyz-p) - spr.w;
+}
+
+float flame(vec3 p){
+    float d = sphere(p*vec3(1.,.5,1.), vec4(.0,-1.,.0,1.));
+    return d + (noise(p+vec3(.0,time*2.,.0)) + noise(p*3.)*.5)*.25*(p.y) ;
+}
+
+float scene(vec3 p){
+    return min(100.-length(p) , abs(flame(p)) );
+}
+
+vec4 raymarch(vec3 org, vec3 dir){
+    float d = 0.0, glow = 0.0, eps = 0.02;
+    vec3  p = org;
+    bool glowed = false;
+    
+    for(int i=0; i<64; i++)
+    {
+        d = scene(p) + eps;
+        p += d * dir;
+        if( d>eps )
+        {
+            if(flame(p) < .0)
+                glowed=true;
+            if(glowed)
+                glow = float(i)/64.;
+        }
     }
-    vec3 color = vec3(0., 0., 0.0);
-    float y = -pow(pos.x, 3.2)/(0.008) * 3.3;
-    //计算当前点与抛物线点的距离，并缩小距离范围。
-    float dir = length(pos-vec2(pos.x, y)) * sin(0.3);
-    if(dir < 0.7){
-        color.rg += smoothstep(0.0,1.,.75-dir);
-        //弱化绿色通道颜色
-        color.g /=2.4;
-    }
-    //强化红色通道颜色。
-    color += pow(color.r,1.1);
-    gl_FragColor = vec4(vec3(color) , 1.0 );
+    return vec4(p,glow);
+}
+
+void main() {
+    vec2 v = -1.5 + 3. * v_TexCoord;
+    
+    vec3 org = vec3(0., -2., 4.); 
+    vec3 dir = normalize(vec3(v.x*1.6, -v.y, -1.5));
+    
+    vec4 p = raymarch(org, dir);
+    float glow = p.w;
+    
+    vec4 col = mix(vec4(1.,.5,.1,1.), vec4(0.1,.5,1.,1.), p.y*.02+.4);
+    
+    gl_FragColor = mix(vec4(0.), col, pow(glow*2.,4.));       
 }
