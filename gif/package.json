@@ -15,7 +15,7 @@
   "dependencies": {
     "gifencoder": "^2.0.1",
     "gm": "^1.23.1",
-    "sharp": "^0.23.0",
+    "sharp": "^0.30.5",
     "three": "^0.104.0",
     "webpack": "^4.30.0"
   }
