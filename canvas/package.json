@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "fabric": "^2.6.0",
+    "fabric": "^5.2.4",
     "webpack": "^4.29.3"
   },
   "devDependencies": {
